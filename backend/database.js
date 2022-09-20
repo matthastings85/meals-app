@@ -10,6 +10,8 @@ const userSchema = new Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   marketing: { type: Boolean, required: true },
+  recipies: [],
+  list: [],
 });
 
 const User = mongoose.model("User", userSchema);
@@ -37,22 +39,38 @@ const createAndSaveUser = async (userObj, done) => {
         if (err) {
           done(err, null);
         } else {
-          done(null, data);
+          console.log(data);
+          const { firstName, lastName, email, id } = data;
+
+          done(null, { firstName, lastName, email, id });
         }
       });
     });
   });
 };
 
-const findUserByEmail = async (email, done) => {
-  User.findOne({ email: email }, (err, user) => {
+const findUserById = async (id, done) => {
+  User.findById(id, (err, user) => {
     if (err) return done(err, null);
-    console.log("user exists: ", true);
+    if (user) console.log("user exists: ", true);
     done(null, user);
   });
 };
 
-// findUserByEmail("test@gmail.com", (err, data) => {
+// findUserById("63299a5fa0cb726d740a6e00", (err, data) => {
+//   if (err) return console.error(err);
+//   console.log("found: ", data);
+// });
+
+const findUserByEmail = async (email, done) => {
+  User.findOne({ email: email }, (err, user) => {
+    if (err) return done(err, null);
+    if (user) console.log("user exists: ", true);
+    done(null, user);
+  });
+};
+
+// findUserByEmail("matthastings85@gmail.com", (err, data) => {
 //   if (err) return console.error(err);
 //   console.log("found: ", data);
 // });
@@ -61,12 +79,16 @@ const authenticateUser = async (email, password, done) => {
   await findUserByEmail(email, (err, data) => {
     if (err) return console.error(err);
 
+    if (!data)
+      return done({ message: "A user with this email does not exists" }, null);
+
     // compare password
     bcrypt.compare(password, data.password, function (err, result) {
       if (err) return console.error(err);
-      const { firstName, lastName, email } = data;
+      console.log(data);
+      const { firstName, lastName, email, id } = data;
       result
-        ? done(null, { firstName, lastName, email })
+        ? done(null, { firstName, lastName, email, id })
         : done({ message: "Password doesn't match" }, null);
     });
   });
@@ -79,10 +101,10 @@ const removeUserByEmail = (email, done) => {
   });
 };
 
-// removeUserByEmail("test@test.com", (err, data) => {
-//   if (err) return console.error(err);
-//   console.log("removed: ", data);
-// });
+removeUserByEmail("matthastings85@gmail.com", (err, data) => {
+  if (err) return console.error(err);
+  console.log("removed: ", data);
+});
 
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -100,3 +122,5 @@ mongoose
 
 exports.createAndSaveUser = createAndSaveUser;
 exports.authenticateUser = authenticateUser;
+exports.findUserByEmail = findUserByEmail;
+exports.findUserById = findUserById;

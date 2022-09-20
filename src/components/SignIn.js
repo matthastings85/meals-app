@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -12,11 +12,19 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Copyright from "./Copyright";
 import { Alert } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+
+// Context
+import { Context } from "../context";
 
 export default function SignIn() {
+  const [cookies, setCookie] = useCookies("userId");
+  const [user, setUser] = useContext(Context);
   const [responseError, setResponseError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -49,6 +57,9 @@ export default function SignIn() {
           setResponseError(false);
         }
         console.log("result: ", result);
+        setUser(result.data);
+        setCookie("userId", result.data.id, { path: "/" });
+        navigate("/");
       })
       .catch((error) => console.log("error: ", error));
   };
@@ -56,6 +67,10 @@ export default function SignIn() {
   const handleChange = (event) => {
     setRememberMe(event.target.checked);
   };
+
+  useEffect(() => {
+    if (cookies.userId) return navigate("/");
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -121,7 +136,7 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

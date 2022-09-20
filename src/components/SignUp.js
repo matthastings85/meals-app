@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -12,12 +12,20 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Copyright from "./Copyright";
 import { Alert } from "@mui/material";
+import { useCookies } from "react-cookie";
 
 // Hashing Password
 // import bcrypt from "bcryptjs-react";
 // const salt = bcrypt.genSaltSync(10);
 
+// Context
+import { Context } from "../context";
+import { useNavigate } from "react-router-dom";
+
 export default function SignUp() {
+  const [cookies, setCookie] = useCookies("userId");
+  const [user, setUser] = useContext(Context);
+  const navigate = useNavigate();
   const [responseError, setResponseError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [marketing, setMarketing] = useState(true);
@@ -66,6 +74,10 @@ export default function SignUp() {
       })
       .catch((error) => console.log("error: ", error));
   };
+
+  useEffect(() => {
+    if (cookies.userId) return navigate("/");
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">
