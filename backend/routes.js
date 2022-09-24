@@ -6,6 +6,7 @@ const {
   authenticateUser,
   findUserByEmail,
   findUserById,
+  createAndSaveRecipe,
 } = require("./database");
 
 // Authorization middleware. When used, the Access Token must
@@ -36,7 +37,7 @@ router.post("/newuser/post", async (req, res) => {
   });
 });
 
-// Login
+//Login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password)
@@ -50,11 +51,6 @@ router.post("/login", async (req, res) => {
   });
 });
 
-//Get all Method
-router.get("/getAll", (req, res) => {
-  res.send("Get All API");
-});
-
 //Get by Email Method
 router.get("/get/:id", async (req, res) => {
   console.log("param: ", req.params.id);
@@ -64,14 +60,28 @@ router.get("/get/:id", async (req, res) => {
       return res.json({ error: true, message: "failed to get user info" });
     } else {
       if (data) {
-        const { firstName, lastName, email, userId } = data;
+        const { firstName, lastName, email, userId, recipies, list } = data;
         return res.status(200).json({
           error: false,
           message: "user found",
-          user: { firstName, lastName, email, userId },
+          user: { firstName, lastName, email, userId, recipies, list },
         });
       }
     }
+  });
+});
+
+//New Recipe
+router.post("/newrecipe/post", async (req, res) => {
+  const recipe = req.body.newRecipe;
+  const userId = req.body.userId;
+
+  await createAndSaveRecipe({ recipe, userId }, (err, data) => {
+    if (err) return res.status(400).json({ error: true, message: err.message });
+
+    res
+      .status(200)
+      .json({ error: false, message: "recipe successfully created", data });
   });
 });
 

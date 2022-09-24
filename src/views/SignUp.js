@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Copyright from "./Copyright";
+import Copyright from "../components/Copyright";
 import { Alert } from "@mui/material";
 import { useCookies } from "react-cookie";
 
@@ -21,6 +21,7 @@ import { useCookies } from "react-cookie";
 // Context
 import { Context } from "../context";
 import { useNavigate } from "react-router-dom";
+import { API } from "../API";
 
 export default function SignUp() {
   const [cookies, setCookie] = useCookies("userId");
@@ -34,7 +35,7 @@ export default function SignUp() {
     setMarketing(event.target.checked);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const firstName = data.get("firstName");
@@ -43,6 +44,23 @@ export default function SignUp() {
     const password = data.get("password");
     // const hashedPassword = bcrypt.hashSync(password, salt);
 
+    if (firstName === "") {
+      setResponseError(true);
+      return setErrorMessage("First Name is Required");
+    }
+    if (lastName === "") {
+      setResponseError(true);
+      return setErrorMessage("Last Name is Required");
+    }
+    if (email === "") {
+      setResponseError(true);
+      return setErrorMessage("Email is Required");
+    }
+    if (password === "") {
+      setResponseError(true);
+      return setErrorMessage("Password is Required");
+    }
+
     const newUser = {
       firstName,
       lastName,
@@ -50,29 +68,20 @@ export default function SignUp() {
       password,
       marketing,
     };
+    console.log(newUser);
 
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const requestOptions = {
-      method: "POST",
-      body: JSON.stringify(newUser),
-      headers: myHeaders,
-      redirect: "follow",
-    };
-
-    fetch("http://localhost:8000/api/newuser/post", requestOptions)
-      .then((response) => {
-        response.status === 400
-          ? setResponseError(true)
-          : setResponseError(false);
-        return response.json();
-      })
-      .then((result) => {
-        result.error && setErrorMessage(result.message);
-        console.log("result: ", result);
-      })
-      .catch((error) => console.log("error: ", error));
+    const result = await API.signUpUser(newUser);
+    console.log(result);
+    if (result.error) {
+      console.log(result);
+      setResponseError(true);
+      setErrorMessage(result.message);
+    } else {
+      console.log("result: ", result);
+      setUser(result.data);
+      setCookie("userId", result.data.id, { path: "/" });
+      navigate("/");
+    }
   };
 
   useEffect(() => {

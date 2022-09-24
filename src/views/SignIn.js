@@ -10,58 +10,42 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Copyright from "./Copyright";
+import Copyright from "../components/Copyright";
 import { Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 // Context
 import { Context } from "../context";
+import { API } from "../API";
 
 export default function SignIn() {
   const [cookies, setCookie] = useCookies("userId");
-  const [user, setUser] = useContext(Context);
+  const [_user, setUser] = useContext(Context);
   const [responseError, setResponseError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
     const email = data.get("email");
     const password = data.get("password");
     const user = { email, password };
 
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    const requestOptions = {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: myHeaders,
-      redirect: "follow",
-    };
-
-    fetch("http://localhost:8000/api/login", requestOptions)
-      .then((response) => {
-        if (response.status === 400) console.log("400 ERROR");
-        return response.json();
-      })
-      .then((result) => {
-        if (result.error) {
-          setResponseError(true);
-          setErrorMessage(result.message);
-        } else {
-          setResponseError(false);
-        }
-        console.log("result: ", result);
-        setUser(result.data);
-        setCookie("userId", result.data.id, { path: "/" });
-        navigate("/");
-      })
-      .catch((error) => console.log("error: ", error));
+    const result = await API.signInUser(user);
+    if (result.error) {
+      console.log("result: ", result);
+      setResponseError(true);
+      setErrorMessage(result.message);
+    } else {
+      setResponseError(false);
+      console.log("result: ", result);
+      setUser(result.data);
+      setCookie("userId", result.data.id, { path: "/" });
+      navigate("/");
+    }
   };
 
   const handleChange = (event) => {

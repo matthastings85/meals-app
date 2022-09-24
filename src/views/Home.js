@@ -9,6 +9,7 @@ import { useCookies } from "react-cookie";
 // Context
 import { Context } from "../context";
 import SignUpButton from "../components/SignUpButton";
+import AddRecipeButton from "../components/AddRecipeButton";
 
 const Home = () => {
   const [cookies, setCookie] = useCookies("userId");
@@ -44,6 +45,7 @@ const Home = () => {
           <h2>
             {user.firstName} {user.lastName} in the house!
           </h2>
+          <AddRecipeButton />
           <LogoutButton />
         </>
       ) : (

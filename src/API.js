@@ -5,6 +5,59 @@ export const API = {
       method: "GET",
     };
 
-    return await (await fetch(url, options)).json();
+    return await (await fetch(url, options))
+      .json()
+      .catch((error) => console.log("error: ", error));
   },
+  signInUser: async (user) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const url = "http://localhost:8000/api/login";
+
+    const requestOptions = {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    return await (await fetch(url, requestOptions))
+      .json()
+      .catch((error) => console.log("error: ", error));
+  },
+  signUpUser: async (newUser) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const url = "http://localhost:8000/api/newuser/post";
+
+    const requestOptions = {
+      method: "POST",
+      body: JSON.stringify(newUser),
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    return await (await fetch(url, requestOptions))
+      .json()
+      .catch((error) => console.log("error: ", error));
+  },
+  postRecipe: async (newRecipe, userId) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const url = "http://localhost:8000/api/newrecipe/post";
+
+    const requestOptions = {
+      method: "POST",
+      body: JSON.stringify({newRecipe, userId}),
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    return await (await fetch(url, requestOptions))
+      .json()
+      .catch((error) => console.log("error: ", error));
+  }
 };
