@@ -9,6 +9,8 @@ import SignIn from "./views/SignIn";
 import SignUp from "./views/SignUp";
 import Home from "./views/Home";
 import AddRecipe from "./views/AddRecipe";
+import Recipes from "./views/Recipes";
+import MealPlan from "./views/MealPlan";
 
 // Context
 import { Context } from "./context";
@@ -35,6 +37,8 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/addrecipe" element={<AddRecipe />}></Route>
+            <Route path="/recipes" element={<Recipes />}></Route>
+            <Route path="/mealplan" element={<MealPlan />}></Route>
             <Route path="/" element={<Home />}></Route>
           </Routes>
         </ThemeProvider>

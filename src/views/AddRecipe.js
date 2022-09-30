@@ -21,29 +21,30 @@ import { FoodBankOutlined } from "@mui/icons-material";
 import IngredientForm from "../components/IngredientForm";
 import RecipeDetails from "../components/RecipeDetails";
 import RecipeInstructions from "../components/RecipeInstructions";
+import RecipeLink from "../components/RecipeLink";
 
 const defaultInstructions = [
   "Heat the oven to 400 degrees F.",
   "Pat the chicken breasts dry and place them in a 9 x 13 baking dish.",
-  "In a small bowl, mix the olive oil, oregano, thyme…te. Coat the chicken breast with seasoning paste.",
-  "Using the same bowl mix together the white wine, g…aining 1 teaspoon salt. Pour over chicken breast.",
-  "If using, nestle the lemon slices between the chic… internal temperature of the chicken reads 165 F.",
+  "In a small bowl, mix the olive oil, oregano, thyme, garlic powder, 1 teaspoon salt and pepper to create a thick marinade/paste. Coat the chicken breast with seasoning paste.",
+  "Using the same bowl mix together the white wine, garlic, lemon zest, lemon juice, brown sugar and remaining 1 teaspoon salt. Pour over chicken breast.",
+  "If using, nestle the lemon slices between the chicken bake for 15 minutes, baste the chicken with the pan juice, bake for another 15 minutes or until the internal temperature of the chicken reads 165 F.",
 ];
 
 const defaultIngredients = [
-  { ingredientName: "checken breasts", quantity: "4", unit: "" },
-  { ingredientName: "olive oil", quantity: "0.25", unit: "cup" },
-  { ingredientName: "oregano", quantity: "2", unit: "tsp" },
-  { ingredientName: "thyme", quantity: "2", unit: "tsp" },
-  { ingredientName: "garlic powder", quantity: "2", unit: "tsp" },
-  { ingredientName: "salt", quantity: "2", unit: "tsp" },
-  { ingredientName: "black pepper", quantity: "0.5", unit: "tsp" },
-  { ingredientName: "dry white wine", quantity: "0.5", unit: "cup" },
-  { ingredientName: "minced garlic", quantity: "2", unit: "tbsp" },
-  { ingredientName: "lemon zest", quantity: "1", unit: "tbsp" },
-  { ingredientName: "lemon juice", quantity: "2", unit: "tbsp" },
-  { ingredientName: "brown sugar", quantity: "1", unit: "tbsp" },
-  { ingredientName: "lemon", quantity: "1", unit: "" },
+  { ingredientName: "chicken breasts", measure: "4" },
+  { ingredientName: "olive oil", measure: "1/4 cup" },
+  { ingredientName: "oregano", measure: "2 tsp" },
+  { ingredientName: "thyme", measure: "2 tsp" },
+  { ingredientName: "garlic powder", measure: "2 tsp" },
+  { ingredientName: "salt", measure: "2 tsp" },
+  { ingredientName: "black pepper", measure: "1/2 tsp" },
+  { ingredientName: "dry white wine", measure: "1/2 cup" },
+  { ingredientName: "minced garlic", measure: "2 tbsp" },
+  { ingredientName: "lemon zest", measure: "1 tbsp" },
+  { ingredientName: "lemon juice", measure: "2 tbsp" },
+  { ingredientName: "brown sugar", measure: "1 tbsp" },
+  { ingredientName: "lemon (sliced)", measure: "1" },
 ];
 
 const defaultDetails = {
@@ -59,10 +60,14 @@ export default function AddRecipe() {
   const navigate = useNavigate();
   const [responseError, setResponseError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [progress, setProgress] = useState(4);
-  const [recipeDetails, setRecipeDetails] = useState(defaultDetails);
-  const [ingredients, setIngredients] = useState(defaultIngredients);
-  const [instructions, setInstructions] = useState(defaultInstructions);
+  const [progress, setProgress] = useState(1);
+  // State for custom recipes
+  const [recipeDetails, setRecipeDetails] = useState({});
+  const [ingredients, setIngredients] = useState([]);
+  const [instructions, setInstructions] = useState([]);
+  // State for linked recipes
+  const [linkRecipe, setLinkRecipe] = useState(false);
+  const [linkRecipeDetails, setLinkRecipeDetails] = useState({});
 
   const submitToDatabase = async () => {
     const newRecipe = { recipeDetails, ingredients, instructions };
@@ -102,27 +107,55 @@ export default function AddRecipe() {
               {recipeDetails.recipeName}
             </Typography>
           )}
-          {progress === 1 && (
+          {linkRecipeDetails.recipeName && (
+            <Typography component="h2" variant="h5">
+              {linkRecipeDetails.recipeName}
+            </Typography>
+          )}
+          {!linkRecipe && progress === 1 && (
+            <>
+              <Button
+                onClick={() => {
+                  setLinkRecipe(true);
+                }}
+                variant="contained"
+                sx={{ m: 2 }}
+              >
+                Link to Recipe
+              </Button>
+              <Button
+                onClick={() => {
+                  setProgress((prevProgress) => prevProgress + 1);
+                }}
+                variant="contained"
+                sx={{ m: 2 }}
+              >
+                Custom Recipe
+              </Button>
+            </>
+          )}
+          {linkRecipe && <RecipeLink />}
+          {progress === 2 && (
             <RecipeDetails
               setRecipeDetails={setRecipeDetails}
               setProgress={setProgress}
             />
           )}
-          {progress === 2 && (
+          {progress === 3 && (
             <IngredientForm
               ingredients={ingredients}
               setIngredients={setIngredients}
               setProgress={setProgress}
             />
           )}
-          {progress === 3 && (
+          {progress === 4 && (
             <RecipeInstructions
               instructions={instructions}
               setInstructions={setInstructions}
               setProgress={setProgress}
             />
           )}
-          {progress === 4 && (
+          {progress === 5 && (
             <>
               <Typography component="h2" variant="h6">
                 Ingredients
@@ -134,7 +167,7 @@ export default function AddRecipe() {
                       <ListItem key={item.ingredientName}>
                         <ListItemText
                           primary={item.ingredientName}
-                          secondary={item.quantity + " " + item.unit}
+                          secondary={item.measure}
                         />
                       </ListItem>
                     );

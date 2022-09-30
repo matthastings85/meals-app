@@ -7,6 +7,8 @@ const {
   findUserByEmail,
   findUserById,
   createAndSaveRecipe,
+  createAndSaveLinkRecipe,
+  addFavoriteRecipe,
 } = require("./database");
 
 // Authorization middleware. When used, the Access Token must
@@ -60,18 +62,18 @@ router.get("/get/:id", async (req, res) => {
       return res.json({ error: true, message: "failed to get user info" });
     } else {
       if (data) {
-        const { firstName, lastName, email, userId, recipies, list } = data;
+        const { firstName, lastName, email, userId, recipes, list } = data;
         return res.status(200).json({
           error: false,
           message: "user found",
-          user: { firstName, lastName, email, userId, recipies, list },
+          user: { firstName, lastName, email, userId, recipes, list },
         });
       }
     }
   });
 });
 
-//New Recipe
+//New Custom Recipe
 router.post("/newrecipe/post", async (req, res) => {
   const recipe = req.body.newRecipe;
   const userId = req.body.userId;
@@ -82,6 +84,37 @@ router.post("/newrecipe/post", async (req, res) => {
     res
       .status(200)
       .json({ error: false, message: "recipe successfully created", data });
+  });
+});
+
+//New Link Recipe
+router.post("/newlinkrecipe/post", async (req, res) => {
+  const recipe = req.body.newRecipe;
+  const userId = req.body.userId;
+
+  await createAndSaveLinkRecipe({ recipe, userId }, (err, data) => {
+    if (err) return res.status(400).json({ error: true, message: err.message });
+
+    res
+      .status(200)
+      .json({ error: false, message: "recipe successfully created", data });
+  });
+});
+
+// Favorite Recipe
+router.post("/favoriterecipe/post", async (req, res) => {
+  const recipeId = req.body.recipeId;
+  const source = req.body.source;
+  const userId = req.body.userId;
+
+  console.log({ recipeId, source, userId });
+
+  await addFavoriteRecipe({ recipeId, source, userId }, (err, data) => {
+    if (err) return res.status(400).json({ error: true, message: err.message });
+
+    res
+      .status(200)
+      .json({ error: false, message: "recipe successfully saved", data });
   });
 });
 

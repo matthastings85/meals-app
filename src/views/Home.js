@@ -1,5 +1,5 @@
 // import { useAuth0 } from "@auth0/auth0-react";
-import { Alert } from "@mui/material";
+import { Alert, Box, Container } from "@mui/material";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { API } from "../API";
 import LoginButton from "../components/LoginButton";
@@ -38,24 +38,32 @@ const Home = () => {
   // isAuthenticated && console.log(user);
 
   return (
-    <div>
-      <h1>Hello World</h1>
-      {user ? (
-        <>
-          <h2>
-            {user.firstName} {user.lastName} in the house!
-          </h2>
-          <AddRecipeButton />
-          <LogoutButton />
-        </>
-      ) : (
-        <>
-          <LoginButton />
-          <SignUpButton />
-        </>
-      )}
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <h1>Hello World</h1>
+        {user ? (
+          <>
+            <h2>
+              {user.firstName} {user.lastName} in the house!
+            </h2>
+            <AddRecipeButton />
+            <LogoutButton />
+          </>
+        ) : (
+          <>
+            <LoginButton />
+            <SignUpButton />
+          </>
+        )}
 
-      {/* {responseError && <Alert severity="error">{errorMessage}</Alert>}
+        {/* {responseError && <Alert severity="error">{errorMessage}</Alert>}
       {isAuthenticated ? (
         <div>
           <img src={user.picture} alt={user.name} />
@@ -65,7 +73,8 @@ const Home = () => {
       ) : (
         <LoginButton></LoginButton>
       )} */}
-    </div>
+      </Box>
+    </Container>
   );
 };
 

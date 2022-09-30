@@ -6,13 +6,20 @@ const { Schema } = mongoose;
 
 // User Schemas & Methods
 
+const favoriteRecipeSchema = new Schema({
+  source: { type: String, required: true },
+  id: { type: String, required: true },
+});
+
+const FavoriteRecipe = mongoose.model("FavoriteRecipe", favoriteRecipeSchema);
+
 const userSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
   marketing: { type: Boolean, required: true },
-  recipies: [String],
+  recipes: [favoriteRecipeSchema],
   list: [String],
 });
 
@@ -42,9 +49,9 @@ const createAndSaveUser = async (userObj, done) => {
           done(err, null);
         } else {
           console.log(data);
-          const { firstName, lastName, email, id, recipies, list } = data;
+          const { firstName, lastName, email, id, recipes, list } = data;
 
-          done(null, { firstName, lastName, email, id, recipies, list });
+          done(null, { firstName, lastName, email, id, recipes, list });
         }
       });
     });
@@ -88,9 +95,9 @@ const authenticateUser = async (email, password, done) => {
     bcrypt.compare(password, data.password, function (err, result) {
       if (err) return console.error(err);
       console.log(data);
-      const { firstName, lastName, email, id, recipies, list } = data;
+      const { firstName, lastName, email, id, recipes, list } = data;
       result
-        ? done(null, { firstName, lastName, email, id, recipies, list })
+        ? done(null, { firstName, lastName, email, id, recipes, list })
         : done({ message: "Password doesn't match" }, null);
     });
   });
@@ -108,7 +115,7 @@ const removeUserByEmail = (email, done) => {
 //   console.log("removed: ", data);
 // });
 
-// Recipe Schemas & Methods
+// Recipe Schemas & Methods ----------------------------------------------------------
 
 const ingredientSchema = new Schema({
   ingredientName: { type: String, required: true },
@@ -129,7 +136,13 @@ const recipeSchema = new Schema({
   instructions: [String],
 });
 
+const linkRecipeSchema = new Schema({
+  recipeName: { type: String, required: true },
+  recipeLink: { type: String, required: true },
+});
+
 const Recipe = mongoose.model("Recipe", recipeSchema);
+const LinkRecipe = mongoose.model("LinkRecipe", linkRecipeSchema);
 
 const createAndSaveRecipe = async ({ recipe, userId }, done) => {
   const newRecipe = new Recipe(recipe);
@@ -142,11 +155,52 @@ const createAndSaveRecipe = async ({ recipe, userId }, done) => {
       // Add Recipe to user
       const user = await User.findOne({ id: userId });
       console.log("found: ", user);
-      user.recipies.push(data.id);
+      user.recipes.push(data.id);
 
       await user.save();
       console.log("upadate: ", user);
       done(null, data);
+    }
+  });
+};
+const createAndSaveLinkRecipe = async ({ recipe, userId }, done) => {
+  const newRecipe = new LinkRecipe(recipe);
+  newRecipe.save(async (err, data) => {
+    if (err) {
+      done(err, null);
+    } else {
+      console.log("Recipe ID: ", data.id);
+
+      // Add Recipe to user
+      const user = await User.findOne({ id: userId });
+      console.log("found: ", user);
+      user.recipes.push(data.id);
+
+      await user.save();
+      console.log("upadate: ", user);
+      const recipes = user.recipes;
+      done(null, { ...data, recipes });
+    }
+  });
+};
+const addFavoriteRecipe = async ({ recipeId, source, userId }, done) => {
+  console.log(recipeId, source, userId);
+  const newFavorite = new FavoriteRecipe({ source, id: recipeId });
+  newFavorite.save(async (err, data) => {
+    if (err) {
+      done(err, null);
+    } else {
+      console.log("Recipe ID: ", data.id);
+
+      // Add Recipe to user
+      const user = await User.findOne({ id: userId });
+      console.log("found: ", user);
+      user.recipes.push(data.id);
+
+      await user.save();
+      console.log("upadate: ", user);
+      const recipes = user.recipes;
+      done(null, { ...data, recipes });
     }
   });
 };
@@ -157,8 +211,18 @@ const removeRecipeById = (id, done) => {
     done(null, data);
   });
 };
+const removeLinkRecipeById = (id, done) => {
+  LinkRecipe.deleteOne({ id: id }, (err, data) => {
+    if (err) return console.error(err);
+    done(null, data);
+  });
+};
 
-// removeRecipeById("632f195af2b292d3509f939f", (err, data) => {
+// removeRecipeById("6330d452e37cb06aa5449995", (err, data) => {
+//   if (err) return console.error(err);
+//   console.log("removed: ", data);
+// });
+// removeLinkRecipeById("6330d8df71c827bf13fc1eb2", (err, data) => {
 //   if (err) return console.error(err);
 //   console.log("removed: ", data);
 // });
@@ -182,3 +246,5 @@ exports.authenticateUser = authenticateUser;
 exports.findUserByEmail = findUserByEmail;
 exports.findUserById = findUserById;
 exports.createAndSaveRecipe = createAndSaveRecipe;
+exports.createAndSaveLinkRecipe = createAndSaveLinkRecipe;
+exports.addFavoriteRecipe = addFavoriteRecipe;

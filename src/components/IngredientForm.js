@@ -16,19 +16,17 @@ import React, { useState } from "react";
 
 const IngredientForm = ({ ingredients, setIngredients, setProgress }) => {
   const [ingredientName, setIngredientName] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [unit, setUnit] = useState("");
+  const [measure, setMeasure] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const ingredientName = data.get("ingredientName");
-    const quantity = data.get("quantity");
+    const measure = data.get("measure");
 
-    setIngredients([...ingredients, { ingredientName, quantity, unit }]);
+    setIngredients([...ingredients, { ingredientName, measure }]);
     setIngredientName("");
-    setQuantity("");
-    setUnit("");
+    setMeasure("");
   };
 
   const handleNext = () => {
@@ -50,7 +48,7 @@ const IngredientForm = ({ ingredients, setIngredients, setProgress }) => {
               <ListItem key={item.ingredientName}>
                 <ListItemText
                   primary={item.ingredientName}
-                  secondary={item.quantity + " " + item.unit}
+                  secondary={item.measure}
                 />
               </ListItem>
             );
@@ -64,7 +62,19 @@ const IngredientForm = ({ ingredients, setIngredients, setProgress }) => {
               Ingredients
             </Typography>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
+            <TextField
+              required
+              variant="standard"
+              fullWidth
+              id="measure"
+              label="Measure"
+              name="measure"
+              value={measure}
+              onChange={(event) => setMeasure(event.target.value)}
+            />
+          </Grid>
+          <Grid item xs={8}>
             <TextField
               name="ingredientName"
               required
@@ -75,31 +85,6 @@ const IngredientForm = ({ ingredients, setIngredients, setProgress }) => {
               variant="standard"
               value={ingredientName}
               onChange={(event) => setIngredientName(event.target.value)}
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <TextField
-              required
-              variant="standard"
-              fullWidth
-              id="quantity"
-              label="Quantity"
-              name="quantity"
-              type="number"
-              value={quantity}
-              onChange={(event) => setQuantity(event.target.value)}
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <TextField
-              name="unit"
-              fullWidth
-              id="unit"
-              label="Unit"
-              autoFocus
-              variant="standard"
-              value={unit}
-              onChange={(event) => setUnit(event.target.value)}
             />
           </Grid>
           <Grid item xs={6}>

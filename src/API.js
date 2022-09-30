@@ -51,7 +51,7 @@ export const API = {
 
     const requestOptions = {
       method: "POST",
-      body: JSON.stringify({newRecipe, userId}),
+      body: JSON.stringify({ newRecipe, userId }),
       headers: myHeaders,
       redirect: "follow",
     };
@@ -59,5 +59,39 @@ export const API = {
     return await (await fetch(url, requestOptions))
       .json()
       .catch((error) => console.log("error: ", error));
-  }
+  },
+  postLinkRecipe: async (newRecipe, userId) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const url = "http://localhost:8000/api/newlinkrecipe/post";
+
+    const requestOptions = {
+      method: "POST",
+      body: JSON.stringify({ newRecipe, userId }),
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    return await (await fetch(url, requestOptions))
+      .json()
+      .catch((error) => console.log("error: ", error));
+  },
+  favoriteRecipe: async (recipeId, source, userId) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const url = "http://localhost:8000/api/favoriterecipe/post";
+
+    const requestOptions = {
+      method: "POST",
+      body: JSON.stringify({ recipeId, source, userId }),
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    return await (await fetch(url, requestOptions))
+      .json()
+      .catch((error) => console.log("error: ", error));
+  },
 };

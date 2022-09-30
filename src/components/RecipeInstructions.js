@@ -56,6 +56,7 @@ const RecipeInstructions = ({ instructions, setInstructions, setProgress }) => {
               required
               variant="standard"
               fullWidth
+              multiline={true}
               id="instruction"
               label="Instruction"
               name="instruction"
