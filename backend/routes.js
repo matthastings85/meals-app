@@ -9,6 +9,10 @@ const {
   createAndSaveRecipe,
   createAndSaveLinkRecipe,
   addFavoriteRecipe,
+  createAndSaveMealPlan,
+  updateMealPlan,
+  findMealPlanById,
+  createAndSaveList,
 } = require("./database");
 
 // Authorization middleware. When used, the Access Token must
@@ -53,7 +57,7 @@ router.post("/login", async (req, res) => {
   });
 });
 
-//Get by Email Method
+//Get by ID Method
 router.get("/get/:id", async (req, res) => {
   console.log("param: ", req.params.id);
   await findUserById(req.params.id, (err, data) => {
@@ -62,12 +66,23 @@ router.get("/get/:id", async (req, res) => {
       return res.json({ error: true, message: "failed to get user info" });
     } else {
       if (data) {
-        const { firstName, lastName, email, userId, recipes, list } = data;
+        const { firstName, lastName, email, id, recipes, lists, mealPlans } =
+          data;
         return res.status(200).json({
           error: false,
           message: "user found",
-          user: { firstName, lastName, email, userId, recipes, list },
+          user: {
+            firstName,
+            lastName,
+            email,
+            userId: id,
+            recipes,
+            lists,
+            mealPlans,
+          },
         });
+      } else {
+        return res.status(200).json({ error: true, message: "user not found" });
       }
     }
   });
@@ -103,18 +118,80 @@ router.post("/newlinkrecipe/post", async (req, res) => {
 
 // Favorite Recipe
 router.post("/favoriterecipe/post", async (req, res) => {
-  const recipeId = req.body.recipeId;
+  const recipe = req.body.recipe;
   const source = req.body.source;
   const userId = req.body.userId;
 
-  console.log({ recipeId, source, userId });
+  console.log({ recipe, source, userId });
 
-  await addFavoriteRecipe({ recipeId, source, userId }, (err, data) => {
+  await addFavoriteRecipe({ recipe, source, userId }, (err, data) => {
     if (err) return res.status(400).json({ error: true, message: err.message });
 
     res
       .status(200)
       .json({ error: false, message: "recipe successfully saved", data });
+  });
+});
+
+// New Meal Plan
+router.post("/newmealplan/post", async (req, res) => {
+  const mealPlan = req.body.mealPlan;
+  const userId = req.body.userId;
+
+  console.log({ mealPlan, userId });
+
+  await createAndSaveMealPlan({ mealPlan, userId }, (err, data) => {
+    if (err) return res.status(400).json({ error: true, message: err.message });
+
+    res
+      .status(200)
+      .json({ error: false, message: "meal plan succesfully created", data });
+  });
+});
+
+// Update Meal Plan
+router.put("/updatemealplan/put", async (req, res) => {
+  const recipe = req.body.recipe;
+  const index = req.body.index;
+  const mealPlanId = req.body.mealPlanId;
+
+  console.log("MEALPLANID: ", mealPlanId);
+
+  await updateMealPlan({ recipe, index, mealPlanId }, (err, data) => {
+    if (err) return res.status(400).json({ error: true, message: err.message });
+
+    res
+      .status(200)
+      .json({ error: false, message: "meal plan succesfully updated", data });
+  });
+});
+
+// Get Meal Plan
+router.get("/getmealplan/get/:id", async (req, res) => {
+  // console.log("param: ", req.params.id);
+  await findMealPlanById(req.params.id, (err, data) => {
+    // console.log("find mealPlan: ", data.plan);
+    if (err) {
+      return res.json({ error: true, message: "failed to get mealPlan info" });
+    } else {
+      return res.status(200).json(data);
+    }
+  });
+});
+
+// New List
+router.post("/newlist/post", async (req, res) => {
+  const list = req.body.list;
+  const userId = req.body.userId;
+  const mealPlanId = req.body.mealPlanId;
+  // console.log(list, userId, mealPlanId);
+
+  await createAndSaveList({ list, userId, mealPlanId }, (err, data) => {
+    if (err) return res.status(400).json({ error: true, message: err.message });
+
+    res
+      .status(200)
+      .json({ error: false, message: "list succesfully created", data });
   });
 });
 

@@ -16,26 +16,6 @@ const Home = () => {
   const [user, setUser] = useContext(Context);
   const [responseError, setResponseError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  // const { user, isAuthenticated, isLoading } = useAuth0();
-
-  const fetchUser = useCallback(async (id) => {
-    const data = await API.getUserData(id);
-    if (data.error) console.log(data.message);
-    setUser(data.user);
-  }, []);
-
-  useEffect(() => {
-    if (user) return console.log("user!!!");
-    if (cookies.userId) {
-      fetchUser(cookies.userId);
-    }
-  }, []);
-
-  // if (isLoading) {
-  //   return <div>Loading ...</div>;
-  // }
-
-  // isAuthenticated && console.log(user);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -51,7 +31,7 @@ const Home = () => {
         {user ? (
           <>
             <h2>
-              {user.firstName} {user.lastName} in the house!
+              {user.firstName} {user.lastName} is in the house!
             </h2>
             <AddRecipeButton />
             <LogoutButton />
@@ -62,17 +42,6 @@ const Home = () => {
             <SignUpButton />
           </>
         )}
-
-        {/* {responseError && <Alert severity="error">{errorMessage}</Alert>}
-      {isAuthenticated ? (
-        <div>
-          <img src={user.picture} alt={user.name} />
-          <h2>{user.name}</h2>
-          <p>{user.email}</p>
-        </div>
-      ) : (
-        <LoginButton></LoginButton>
-      )} */}
       </Box>
     </Container>
   );

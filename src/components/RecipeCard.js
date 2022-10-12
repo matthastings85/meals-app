@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -9,14 +9,15 @@ import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { API } from "../API";
 import { useCookies } from "react-cookie";
-import { Add } from "@mui/icons-material";
+import { RestaurantMenu } from "@mui/icons-material";
+import { List, ListItem, ListItemText } from "@mui/material";
+
+// Context
+import { Context } from "../context";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -29,14 +30,10 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function RecipeCard({
-  recipe,
-  planRecipes,
-  setPlanRecipes,
-  setSearching,
-  setSelectedRecipe,
-}) {
+export default function RecipeCard({ recipe }) {
   const [cookies, setCookie] = useCookies("userId");
+  const [user, setUser] = useContext(Context);
+  const [favoriteColor, setFavoriteColor] = useState("primary");
 
   const [expanded, setExpanded] = useState(false);
 
@@ -44,32 +41,41 @@ export default function RecipeCard({
     setExpanded(!expanded);
   };
 
-  const favoriteRecipe = async (event) => {
-    const recipeId = event.currentTarget.id;
+  const favoriteRecipe = async () => {
     const source = "spoonacular";
     const userId = cookies.userId;
-    const result = await API.favoriteRecipe(recipeId, source, userId);
-    console.log(result);
+    console.log(userId);
+    const result = await API.favoriteRecipe(recipe, source, userId);
+    const favoriteRecipes = [...result.data.recipes];
+    setUser({ ...user, recipes: favoriteRecipes });
+    setFavoriteColor("primary.favorite");
   };
 
-  const handleAdd = () => {
-    console.log("adddddd");
-    setPlanRecipes([...planRecipes, recipe]);
-    setSearching(false);
-    setSelectedRecipe(null);
+  const checkFavorites = () => {
+    if (user.recipes.findIndex((item) => item.recipe.id == recipe.id) !== -1) {
+      setFavoriteColor("primary.favorite");
+    }
   };
+
+  useEffect(() => {
+    checkFavorites();
+  }, []);
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: "100%" }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: "primary.main" }} aria-label="recipe">
-            R
+            <RestaurantMenu />
           </Avatar>
         }
         action={
-          <IconButton onClick={handleAdd} aria-label="settings">
-            <Add />
+          <IconButton
+            onClick={favoriteRecipe}
+            id={recipe.id}
+            aria-label="add to favorites"
+          >
+            <FavoriteIcon sx={{ color: favoriteColor }} />
           </IconButton>
         }
         title={recipe.title}
@@ -83,33 +89,42 @@ export default function RecipeCard({
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          Prep Time: {recipe.preparationMinutes} Cook Time:
-          {recipe.cookingMinutes} Serves: {recipe.servings} Likes:{" "}
-          {recipe.aggregateLikes}
+          Prep Time: {recipe.preparationMinutes} mins
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Cook Time: {recipe.cookingMinutes} mins
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Serves: {recipe.servings}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Likes: {recipe.aggregateLikes}
         </Typography>
         <Typography component="h3" variant="h6">
           Ingredients
         </Typography>
-        {recipe.extendedIngredients.map((item, index) => {
-          return (
-            <Typography key={index} variant="body1" color="text.secondary">
-              {item.measures.metric.amount} {item.measures.metric.unitShort}{" "}
-              {item.name}
-            </Typography>
-          );
-        })}
+        <List>
+          {recipe.extendedIngredients.map((item, index) => {
+            return (
+              <ListItem disablePadding key={index}>
+                <ListItemText
+                  primary={
+                    item.measures.metric.amount +
+                    " " +
+                    item.measures.metric.unitShort +
+                    " " +
+                    item.name
+                  }
+                />
+              </ListItem>
+            );
+          })}
+        </List>
       </CardContent>
-      <CardActions disableSpacing>
-        <IconButton
-          onClick={favoriteRecipe}
-          id={recipe.id}
-          aria-label="add to favorites"
-        >
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
+      <CardActions>
+        <Typography component="h3" variant="h6">
+          Instructions
+        </Typography>
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

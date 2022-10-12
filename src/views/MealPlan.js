@@ -1,23 +1,54 @@
-import React, { useState } from "react";
-import { Avatar, Box, Container, Typography } from "@mui/material";
-import NavBtn from "../components/NavBtn";
-import { Create, FoodBankOutlined, Troubleshoot } from "@mui/icons-material";
-import CreateMealPlan from "../components/CreateMealPlan";
-import BuildPlan from "../components/BuildPlan";
+import React, { useCallback, useEffect, useState } from "react";
+
+// Utilities
+import { useParams } from "react-router-dom";
+import { API } from "../API";
+
+// Components
+import { Alert, Avatar, Typography } from "@mui/material";
+import MealPlanCard from "../components/MealPlanCard";
+import { Box, Container } from "@mui/system";
+import { FoodBankOutlined } from "@mui/icons-material";
 
 const MealPlan = () => {
-  const [creating, setCreating] = useState(false);
+  const { mealPlanId } = useParams();
   const [mealPlan, setMealPlan] = useState(null);
-  const [building, setBuilding] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [startDate, setStartDate] = useState(null);
 
-  const createPlan = () => {
-    setCreating(true);
-  };
+  const getMealPlan = useCallback(async (mealPlanId) => {
+    const result = await API.getMealPlan(mealPlanId);
+    console.log(result);
+    setMealPlan(result);
+    setStartDate(
+      new Date(result.startDate.replace(/-/g, "/")).toLocaleDateString(
+        "en-us",
+        {
+          weekday: "short",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        }
+      )
+    );
+  });
+
+  useEffect(() => {
+    if (!mealPlan) {
+      getMealPlan(mealPlanId);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(mealPlanId, mealPlan);
+  }, [mealPlan]);
+
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="100%">
       <Box
         sx={{
-          marginTop: 8,
+          mt: 1,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -29,21 +60,26 @@ const MealPlan = () => {
         <Typography component="h1" variant="h4">
           Meal Plans
         </Typography>
-        {/* create new plan */}
-        {!creating && !building && (
-          <NavBtn callback={createPlan} text="Create Plan" icon={<Create />} />
+        {error && <Alert severity="error">{errorMessage}</Alert>}
+        {startDate && (
+          <Typography sx={{ mt: 2 }} component="h1" variant="h6">
+            Meal Plan for {startDate}
+          </Typography>
         )}
-        {creating && (
-          <CreateMealPlan
-            setMealPlan={setMealPlan}
-            setCreating={setCreating}
-            setBuilding={setBuilding}
-          />
-        )}
-        {/* Build plan */}
-        {building && (
-          <BuildPlan mealPlan={mealPlan} setMealPlan={setMealPlan} />
-        )}
+        {mealPlan &&
+          mealPlan.plan.length > 0 &&
+          mealPlan.plan.map((item, index) => {
+            // console.log(item);
+            return (
+              <MealPlanCard
+                index={index}
+                key={index}
+                item={item}
+                mealPlan={mealPlan}
+                setMealPlan={setMealPlan}
+              />
+            );
+          })}
       </Box>
     </Container>
   );

@@ -1,11 +1,22 @@
-import { Alert, Box, Button, Grid, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
+import { useCookies } from "react-cookie";
 
-const CreateMealPlan = ({ setMealPlan, setCreating, setBuilding }) => {
+import { Alert, Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { API } from "../API";
+
+// Context
+import { Context } from "../context";
+import { useNavigate } from "react-router-dom";
+
+const CreateMealPlan = ({ setCreating }) => {
+  const [cookies, setCookie] = useCookies("userId");
+  const [user, setUser] = useContext(Context);
+  const navigate = useNavigate();
+
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const startDate = data.get("startDate");
@@ -27,13 +38,24 @@ const CreateMealPlan = ({ setMealPlan, setCreating, setBuilding }) => {
     for (let i = 0; i < length; i++) {
       const day = new Date(startDate.replace(/-/g, "/"));
       day.setDate(day.getDate() + i);
-      plan.push({ day: i + 1, date: day, recipe: {} });
+      plan.push({
+        day: i + 1,
+        date: day,
+        recipe: { title: "recipe goes here" },
+      });
     }
-    console.log(plan);
 
-    setMealPlan({ startDate, length, plan });
+    // Save Meal Plan to user in database
+    const userId = cookies.userId;
+
+    console.log(userId);
+
+    const result = await API.newMealPlan({ startDate, length, plan }, userId);
+    console.log(result);
+    setUser(result.data.user);
+
     setCreating(false);
-    setBuilding(true);
+    navigate("/mealplans/" + result.data.mealPlanId);
   };
 
   return (

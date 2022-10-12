@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { List, ListItemButton, ListItemText, Typography } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItemButton,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import SearchBar from "./SearchBar";
 import { FOODAPI } from "../FOODAPI";
 
@@ -20,7 +26,7 @@ const SearchByName = ({ callback }) => {
   }, [searchTerm]);
 
   return (
-    <>
+    <Box sx={{ width: "100%" }}>
       <SearchBar setSearchTerm={setSearchTerm} />
       {searchResults.length > 0 && (
         <List>
@@ -38,7 +44,7 @@ const SearchByName = ({ callback }) => {
           })}
         </List>
       )}
-    </>
+    </Box>
   );
 };
 

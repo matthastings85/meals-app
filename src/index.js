@@ -4,6 +4,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import UserProvider from "./context";
 import reportWebVitals from "./reportWebVitals";
+import { CookiesProvider } from "react-cookie";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -13,9 +14,11 @@ root.render(
       clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
       redirectUri={process.env.REACT_APP_AUTH0_CALLBACK_URL}
     > */}
-    <UserProvider>
-      <App />
-    </UserProvider>
+    <CookiesProvider>
+      <UserProvider>
+        <App />
+      </UserProvider>
+    </CookiesProvider>
     {/* </Auth0Provider> */}
   </React.StrictMode>
 );
