@@ -54,7 +54,7 @@ const MealPlan = () => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
           <FoodBankOutlined />
         </Avatar>
         <Typography component="h1" variant="h4">

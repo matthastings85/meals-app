@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Avatar, Box, Button, Container, Typography } from "@mui/material";
 import NavBtn from "../components/NavBtn";
-import { Create, FoodBankOutlined, Troubleshoot } from "@mui/icons-material";
+import { Create, FoodBankOutlined } from "@mui/icons-material";
 import CreateMealPlan from "../components/CreateMealPlan";
 
 // Context
@@ -11,12 +11,11 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 const MealPlans = () => {
-  const [cookies, setCookie] = useCookies("userId");
+  const [cookies, _setCookie] = useCookies("userId");
   const navigate = useNavigate();
-  const [user, setUser] = useContext(Context);
+  const [user, _setUser] = useContext(Context);
   const [creating, setCreating] = useState(false);
-  const [mealPlan, setMealPlan] = useState(null);
-  const [building, setBuilding] = useState(false);
+  const [building, _setBuilding] = useState(false);
   const [availablePlans, setAvailablePlans] = useState([]);
 
   const createPlan = () => {
@@ -50,7 +49,7 @@ const MealPlans = () => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
           <FoodBankOutlined />
         </Avatar>
         <Typography component="h1" variant="h4">

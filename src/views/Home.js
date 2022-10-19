@@ -1,47 +1,56 @@
-// import { useAuth0 } from "@auth0/auth0-react";
-import { Alert, Box, Container } from "@mui/material";
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { API } from "../API";
-import LoginButton from "../components/LoginButton";
-import LogoutButton from "../components/LogoutButton";
-import { useCookies } from "react-cookie";
+import React, { useContext } from "react";
+import { Box, Card, CardContent, Container, Typography } from "@mui/material";
+import HomeNavCard from "../components/HomeNavCard";
+import {
+  CalendarMonthRounded,
+  Favorite,
+  FoodBankOutlined,
+  ListRounded,
+} from "@mui/icons-material";
 
 // Context
 import { Context } from "../context";
-import SignUpButton from "../components/SignUpButton";
-import AddRecipeButton from "../components/AddRecipeButton";
 
 const Home = () => {
-  const [cookies, setCookie] = useCookies("userId");
-  const [user, setUser] = useContext(Context);
-  const [responseError, setResponseError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [user, _setUser] = useContext(Context);
 
   return (
     <Container component="main" maxWidth="xs">
+      <Card sx={{ maxWidth: 400, width: 1, mt: 2 }}>
+        <CardContent>
+          <Typography component="h2" variant="h6">
+            Welcome {user.firstName}!
+          </Typography>
+          <Typography>Happy Meal Planning!</Typography>
+        </CardContent>
+      </Card>
       <Box
         sx={{
-          marginTop: 8,
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          justifyContent: "space-around",
+          flexWrap: "wrap",
         }}
       >
-        <h1>Hello World</h1>
-        {user ? (
-          <>
-            <h2>
-              {user.firstName} {user.lastName} is in the house!
-            </h2>
-            <AddRecipeButton />
-            <LogoutButton />
-          </>
-        ) : (
-          <>
-            <LoginButton />
-            <SignUpButton />
-          </>
-        )}
+        <HomeNavCard
+          to="mealplans"
+          title="Meal Plans"
+          icon={<CalendarMonthRounded sx={{ fontSize: 80 }} />}
+        />
+        <HomeNavCard
+          to="recipes"
+          title="Recipes"
+          icon={<FoodBankOutlined sx={{ fontSize: 80 }} />}
+        />
+        <HomeNavCard
+          to="favorites"
+          title="Favorites"
+          icon={<Favorite sx={{ fontSize: 80 }} />}
+        />
+        <HomeNavCard
+          to="lists"
+          title="Shopping Lists"
+          icon={<ListRounded sx={{ fontSize: 80 }} />}
+        />
       </Box>
     </Container>
   );

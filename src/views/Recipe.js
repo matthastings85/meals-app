@@ -22,7 +22,7 @@ const Recipe = () => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
           <FoodBankOutlined />
         </Avatar>
         {loading && <Spinner />}

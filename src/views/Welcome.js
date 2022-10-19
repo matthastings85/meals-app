@@ -1,18 +1,56 @@
-import { Box, Container } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Container,
+  Typography,
+} from "@mui/material";
+import { textAlign } from "@mui/system";
+import Image from "mui-image";
 import React from "react";
 
 import LoginButton from "../components/LoginButton";
 import SignUpButton from "../components/SignUpButton";
+import Logo from "../images/meals-app-logo-white.png";
 
 const Welcome = () => {
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        mt: 8,
+      }}
+    >
+      <Image
+        src={Logo}
+        height="100%"
+        width="100%"
+        fit="cover"
+        duration={1000}
+        easing="cubic-bezier(0.7, 0, 0.6, 1)"
+        showLoading={true}
+        errorIcon={true}
+        shift="null"
+        distance="100px"
+        shiftDuration={900}
+        bgColor="inherit"
+      />
+      <Card sx={{ maxWidth: 400, width: 1, mt: 4, textAlign: "center" }}>
+        <CardContent>
+          <Typography component="h2" variant="h5">
+            Welcome to the Meals App!
+          </Typography>
+          <Typography>Sign Up or Login to get started.</Typography>
+          <Typography>Happy Meal Planning!</Typography>
+        </CardContent>
+      </Card>
       <Box
         sx={{
-          marginTop: 8,
+          mt: 4,
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          justifyContent: "space-around",
         }}
       >
         <LoginButton />

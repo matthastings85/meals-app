@@ -59,9 +59,27 @@ const createAndSaveUser = async (userObj, done) => {
           done(err, null);
         } else {
           console.log(data);
-          const { firstName, lastName, email, id, recipes, lists } = data;
+          const {
+            firstName,
+            lastName,
+            email,
+            id,
+            recipes,
+            lists,
+            mealPlans,
+            marketing,
+          } = data;
 
-          done(null, { firstName, lastName, email, id, recipes, lists });
+          done(null, {
+            firstName,
+            lastName,
+            email,
+            id,
+            recipes,
+            lists,
+            mealPlans,
+            marketing,
+          });
         }
       });
     });
@@ -105,9 +123,27 @@ const authenticateUser = async (email, password, done) => {
     bcrypt.compare(password, data.password, function (err, result) {
       if (err) return console.error(err);
       console.log(data);
-      const { firstName, lastName, email, id, recipes, lists } = data;
+      const {
+        firstName,
+        lastName,
+        email,
+        id,
+        recipes,
+        lists,
+        mealPlans,
+        marketing,
+      } = data;
       result
-        ? done(null, { firstName, lastName, email, id, recipes, lists })
+        ? done(null, {
+            firstName,
+            lastName,
+            email,
+            id,
+            recipes,
+            lists,
+            mealPlans,
+            marketing,
+          })
         : done({ message: "Password doesn't match" }, null);
     });
   });
@@ -243,9 +279,11 @@ const removeLinkRecipeById = (id, done) => {
 const listSchema = new Schema({
   mealPlanId: { type: String, required: true },
   list: [],
+  acquired: [],
 });
 
 const List = mongoose.model("List", listSchema);
+
 // List Methods -------------------------------------------------------------------
 const createAndSaveList = async ({ list, userId, mealPlanId }, done) => {
   const newList = new List({ mealPlanId, list });
@@ -286,6 +324,27 @@ const createAndSaveList = async ({ list, userId, mealPlanId }, done) => {
       });
     }
   });
+};
+
+const findListById = async (id, done) => {
+  List.findById(id, (err, mealPlan) => {
+    if (err) return done(err, null);
+    if (mealPlan) console.log("list exists: ", true);
+    done(null, mealPlan);
+  });
+};
+
+const updateList = async ({ acquiredList, listList, listId }, done) => {
+  const targetList = await List.findById(listId);
+
+  targetList.list = listList;
+  targetList.acquired = acquiredList;
+
+  targetList.markModified("list");
+  targetList.markModified("acquired");
+  await targetList.save();
+
+  done(null, targetList);
 };
 
 // Meal Plan Methods --------------------------------------------------------------
@@ -408,3 +467,5 @@ exports.createAndSaveMealPlan = createAndSaveMealPlan;
 exports.updateMealPlan = updateMealPlan;
 exports.findMealPlanById = findMealPlanById;
 exports.createAndSaveList = createAndSaveList;
+exports.findListById = findListById;
+exports.updateList = updateList;

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { API } from "../API";
 
 const useGetMealPlans = (mealPlans) => {
-  const [array, setArray] = useState([]);
+  const [plansArray, setPlansArray] = useState([]);
   const [loading, setLoading] = useState(true);
   const fetchMealPlans = async (mealPlans) => {
     const stagingArray = [];
@@ -10,7 +10,7 @@ const useGetMealPlans = (mealPlans) => {
       const result = await API.getMealPlan(id);
       stagingArray.push(result);
     }
-    setArray(stagingArray);
+    setPlansArray(stagingArray);
     setLoading(false);
   };
 
@@ -18,7 +18,7 @@ const useGetMealPlans = (mealPlans) => {
     fetchMealPlans(mealPlans);
   }, [mealPlans]);
 
-  return { array, loading };
+  return { plansArray, loading };
 };
 
 export default useGetMealPlans;

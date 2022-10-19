@@ -13,6 +13,8 @@ const {
   updateMealPlan,
   findMealPlanById,
   createAndSaveList,
+  findListById,
+  updateList,
 } = require("./database");
 
 // Authorization middleware. When used, the Access Token must
@@ -57,7 +59,7 @@ router.post("/login", async (req, res) => {
   });
 });
 
-//Get by ID Method
+//Get user by ID Method
 router.get("/get/:id", async (req, res) => {
   console.log("param: ", req.params.id);
   await findUserById(req.params.id, (err, data) => {
@@ -192,6 +194,36 @@ router.post("/newlist/post", async (req, res) => {
     res
       .status(200)
       .json({ error: false, message: "list succesfully created", data });
+  });
+});
+
+// Get List
+router.get("/getlist/get/:id", async (req, res) => {
+  // console.log("param: ", req.params.id);
+  await findListById(req.params.id, (err, data) => {
+    // console.log("find mealPlan: ", data.plan);
+    if (err) {
+      return res.json({ error: true, message: "failed to get list info" });
+    } else {
+      return res.status(200).json(data);
+    }
+  });
+});
+
+// Update List
+router.put("/updatelist/put", async (req, res) => {
+  const acquiredList = req.body.acquiredList;
+  const listList = req.body.listList;
+  const listId = req.body.listId;
+
+  console.log("LISTID: ", listId);
+
+  await updateList({ acquiredList, listList, listId }, (err, data) => {
+    if (err) return res.status(400).json({ error: true, message: err.message });
+
+    res
+      .status(200)
+      .json({ error: false, message: "list succesfully updated", data });
   });
 });
 

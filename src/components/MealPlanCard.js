@@ -21,6 +21,7 @@ import { API } from "../API";
 import { Context } from "../context";
 import { useNavigate } from "react-router-dom";
 import AddFavoriteDialog from "./AddFavoriteDialog";
+import RecipePreviewCard from "./RecipePreviewCard";
 
 const MealPlanCard = ({ index, item, mealPlan, setMealPlan }) => {
   const [user, setUser] = useContext(Context);
@@ -138,58 +139,11 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan }) => {
             </Box>
           )}
           {item.recipe.title !== "recipe goes here" && (
-            <Card sx={{ width: "100%", display: "flex" }}>
-              {item.recipe.title !== "Leftovers" && (
-                <CardMedia
-                  component="img"
-                  height="150"
-                  sx={{ width: 150, borderRadius: "2 0 0 2" }}
-                  image={item.recipe.image}
-                  alt={item.recipe.title + " image"}
-                />
-              )}
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  width: "100%",
-                  p: 1,
-                }}
-              >
-                <Box>
-                  <Typography component="h3" variant="subtitle2">
-                    {item.recipe.title}
-                  </Typography>
-                  <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    component="div"
-                  >
-                    {item.recipe.sourceName}
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-around",
-                  }}
-                >
-                  {item.recipe.title !== "Leftovers" && (
-                    <Button
-                      onClick={() => {
-                        navigate("/recipes/" + item.recipe.id);
-                      }}
-                    >
-                      View Recipe
-                    </Button>
-                  )}
-                  <Button onClick={handleRemove}>
-                    <RemoveCircleOutline />
-                  </Button>
-                </Box>
-              </Box>
-            </Card>
+            <RecipePreviewCard
+              item={item}
+              enableRemove
+              callback={handleRemove}
+            />
           )}
         </Box>
       </CardContent>

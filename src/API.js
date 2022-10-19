@@ -143,4 +143,16 @@ export const API = {
 
     return await await API.postMethod({ list, userId, mealPlanId }, url);
   },
+  getList: async (id) => {
+    const url = "http://localhost:8000/api/getlist/get/" + id;
+
+    return await await API.getMethod(url);
+  },
+  updateList: async (acquiredList, listList, listId) => {
+    const url = "http://localhost:8000/api/updatelist/put";
+
+    console.log(acquiredList, listList, listId);
+
+    return await await API.putMethod({ acquiredList, listList, listId }, url);
+  },
 };

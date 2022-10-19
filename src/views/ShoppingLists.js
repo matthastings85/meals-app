@@ -1,48 +1,37 @@
-import { CheckBoxOutlineBlank, ListRounded } from "@mui/icons-material";
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Popover,
-  Typography,
-} from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import { ListRounded } from "@mui/icons-material";
+import { Avatar, Box, Container, Typography } from "@mui/material";
+import React, { useContext } from "react";
 import { useCookies } from "react-cookie";
 import { API } from "../API";
-import BasicPopover from "../components/BasicPopover";
+import CreateListFromMealPlan from "../components/CreateListFromMealPlan";
 import Spinner from "../components/Spinner";
 import { Context } from "../context";
 import createList from "../helpers/createList";
-import useCreateList from "../hooks/useCreateList";
+import useGetLists from "../hooks/useGetLists";
 import useGetMealPlans from "../hooks/useGetMealPlans";
 
 const ShoppingLists = () => {
   const [cookies] = useCookies("userId");
   const [user, setUser] = useContext(Context);
-  // const { ingredients } = useCreateList(user.mealPlans);
-  const { array, loading } = useGetMealPlans(user.mealPlans);
+  const mealPlansArray = user ? user.mealPlans : [];
+  const { plansArray, loading } = useGetMealPlans(mealPlansArray);
+  const userLists = user ? user.lists : [];
+  const { listArray, listLoading } = useGetLists(userLists);
 
   const handleCreateList = async (e) => {
-    const list = createList(array[e.target.id]);
-    const mealPlanId = array[e.target.id]._id;
+    const list = createList(plansArray[e.target.id]);
+    const mealPlanId = plansArray[e.target.id]._id;
     const userId = cookies.userId;
-    console.log(mealPlanId);
+
+    console.log("list:", list, mealPlanId, userId);
+
     const result = await API.newList(list, userId, mealPlanId);
     console.log(result);
-    setUser(result.user);
+    setUser(result.data.user);
   };
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   return (
-    <Container component="main" maxWidth="100%">
+    <Container component="main" maxWidth="100%" sx={{ width: 400 }}>
       <Box
         sx={{
           marginTop: 1,
@@ -51,67 +40,22 @@ const ShoppingLists = () => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <ListRounded sx={{ color: "primary.main" }} />
+        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
+          <ListRounded />
         </Avatar>
         <Typography component="h1" variant="h4">
           Shopping Lists
         </Typography>
-        <Typography sx={{ mt: 5 }} component="h3" variant="h6">
-          Create List from Meal Plan
-        </Typography>
+
         <Box sx={{ width: 1, mt: 3 }}>
           {loading && <Spinner />}
-          {array.length > 0 &&
-            !loading &&
-            array.map((item, index) => {
-              return (
-                <Box
-                  key={"mealPlan" + index}
-                  sx={{
-                    mt: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography component="h3" variant="h6">
-                    Meal Plan: {item.startDate}
-                  </Typography>
-                  <Button
-                    id={index}
-                    onClick={handleCreateList}
-                    variant="contained"
-                  >
-                    Create List
-                  </Button>
-                </Box>
-              );
-            })}
-          {/* {ingredients.length > 0 &&
-            ingredients.map((item, index) => {
-              return (
-                <>
-                  <Typography key={index} component="h3" variant="h6">
-                    Meal Plan: {item.mealPlan}
-                  </Typography>
-                  {item.ingredients.map((ingredient, index) => {
-                    return (
-                      <ListItem
-                        key={index}
-                        sx={{ width: 1, maxWidth: "400px", p: 0 }}
-                      >
-                        <ListItemIcon>
-                          <CheckBoxOutlineBlank />
-                        </ListItemIcon>
-                        <ListItemText primary={ingredient.name} />
-                        <BasicPopover content={ingredient} />
-                      </ListItem>
-                    );
-                  })}
-                </>
-              );
-            })} */}
+          {plansArray.length > 0 && !loading && (
+            <CreateListFromMealPlan
+              array={plansArray}
+              callback={handleCreateList}
+              listArray={listArray}
+            />
+          )}
         </Box>
       </Box>
     </Container>

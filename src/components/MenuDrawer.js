@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -16,17 +16,21 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import {
-  AccountBox,
   AccountCircle,
   CalendarMonthRounded,
   Favorite,
   FoodBankRounded,
   ListRounded,
+  MenuBook,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
+import BasicPopover from "./BasicPopover";
+import AccountPopover from "./AccountPopover";
+import Image from "mui-image";
+import Logo from "../images/meals-app-logo-white.png";
+import { Context } from "../context";
 
 const drawerWidth = 240;
 
@@ -56,14 +60,14 @@ const AppBar = styled(MuiAppBar, {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
+  // ...(open && {
+  //   width: `calc(100% - ${drawerWidth}px)`,
+  //   marginLeft: `${drawerWidth}px`,
+  //   transition: theme.transitions.create(["margin", "width"], {
+  //     easing: theme.transitions.easing.easeOut,
+  //     duration: theme.transitions.duration.enteringScreen,
+  //   }),
+  // }),
 }));
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -76,13 +80,14 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const navMenu = [
-  { name: "Meal Plans", nav: "mealplans" },
-  { name: "Favorites", nav: "favorites" },
-  { name: "Recipes", nav: "recipes" },
-  { name: "Shopping Lists", nav: "lists" },
+  { name: "Meal Plans", nav: "mealplans", icon: <CalendarMonthRounded /> },
+  { name: "Favorites", nav: "favorites", icon: <Favorite /> },
+  { name: "Recipes", nav: "recipes", icon: <FoodBankRounded /> },
+  { name: "Shopping Lists", nav: "lists", icon: <ListRounded /> },
 ];
 
 const MenuDrawer = ({ children }) => {
+  const [user, setUser] = useContext(Context);
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -100,26 +105,104 @@ const MenuDrawer = ({ children }) => {
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
+          {/* Desktop Menu */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              flexGrow: 1,
+              mt: 0.5,
+              mb: 0.5,
+            }}
+          >
+            <Image
+              src={Logo}
+              width="100px"
+              fit="cover"
+              duration={1000}
+              easing="cubic-bezier(0.7, 0, 0.6, 1)"
+              showLoading={true}
+              errorIcon={true}
+              shift="null"
+              distance="100px"
+              shiftDuration={900}
+              bgColor="inherit"
+            />
+          </Box>
+          <Box
+            sx={{
+              flexGrow: 2,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "center",
+              gap: "20px",
+            }}
+          >
+            {navMenu.map((item) => (
+              <Button
+                key={item.name}
+                onClick={() => navigate(`/${item.nav}`)}
+                sx={{ my: 2, color: "white" }}
+                startIcon={item.icon}
+              >
+                {item.name}
+              </Button>
+            ))}
+          </Box>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-end",
+            }}
+          >
+            <AccountPopover />
+          </Box>
+          {/* Mobile Menu */}
           <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
+            sx={{
+              mr: 2,
+              display: { xs: "block", md: "none" },
+            }}
           >
             <MenuIcon />
           </IconButton>
           <Box
             sx={{
               width: "100%",
-              display: "flex",
+              display: { xs: "flex", md: "none" },
               justifyContent: "space-between",
               alignItems: "center",
             }}
           >
-            <Typography variant="h6" noWrap component="div">
-              Meals App
-            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexGrow: 1,
+                mt: 0.5,
+                mb: 0.5,
+              }}
+            >
+              <Image
+                src={Logo}
+                width="100px"
+                fit="cover"
+                duration={1000}
+                easing="cubic-bezier(0.7, 0, 0.6, 1)"
+                showLoading={true}
+                errorIcon={true}
+                shift="null"
+                distance="100px"
+                shiftDuration={900}
+                bgColor="inherit"
+              />
+            </Box>
             <IconButton>
               <AccountCircle />
             </IconButton>
@@ -133,7 +216,7 @@ const MenuDrawer = ({ children }) => {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
-            bgcolor: "secondary.main",
+
             color: "primary.main",
           },
         }}
@@ -160,15 +243,7 @@ const MenuDrawer = ({ children }) => {
                 }}
               >
                 <ListItemIcon sx={{ color: "primary.main" }}>
-                  {item.nav === "recipes" ? (
-                    <FoodBankRounded />
-                  ) : item.nav === "favorites" ? (
-                    <Favorite />
-                  ) : item.nav === "mealplans" ? (
-                    <CalendarMonthRounded />
-                  ) : (
-                    <ListRounded />
-                  )}
+                  {item.icon}
                 </ListItemIcon>
                 <ListItemText primary={item.name} />
               </ListItemButton>

@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 import { API } from "./API";
 
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { brown, lightBlue, pink } from "@mui/material/colors";
+import { brown, deepOrange, lightBlue, pink } from "@mui/material/colors";
 
 // Views
 import SignIn from "./views/SignIn";
@@ -23,6 +23,8 @@ import { Context } from "./context";
 
 // Components
 import MenuDrawer from "./components/MenuDrawer";
+import ListView from "./views/ListView";
+import FavoritesView from "./views/FavoritesView";
 
 const theme = createTheme({
   palette: {
@@ -32,6 +34,18 @@ const theme = createTheme({
     },
     secondary: {
       main: brown[700],
+    },
+  },
+});
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+    primary: {
+      main: deepOrange["A400"],
+      favorite: pink[500],
+    },
+    background: {
+      default: "#141313",
     },
   },
 });
@@ -62,7 +76,7 @@ function App() {
   }, [cookies]);
   return (
     <Router>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <MenuDrawer>
           <Routes>
@@ -74,6 +88,8 @@ function App() {
             <Route path="/mealplans" element={<MealPlans />} />
             <Route path="/mealplans/:mealPlanId" element={<MealPlan />} />
             <Route path="/lists" element={<ShoppingLists />} />
+            <Route path="/lists/:listId" element={<ListView />} />
+            <Route path="/favorites" element={<FavoritesView />} />
             <Route path="/" element={user ? <Home /> : <Welcome />} />
           </Routes>
         </MenuDrawer>
