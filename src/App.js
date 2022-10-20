@@ -25,6 +25,7 @@ import { Context } from "./context";
 import MenuDrawer from "./components/MenuDrawer";
 import ListView from "./views/ListView";
 import FavoritesView from "./views/FavoritesView";
+import Footer from "./components/Footer";
 
 const theme = createTheme({
   palette: {
@@ -92,6 +93,7 @@ function App() {
             <Route path="/favorites" element={<FavoritesView />} />
             <Route path="/" element={user ? <Home /> : <Welcome />} />
           </Routes>
+          <Footer />
         </MenuDrawer>
       </ThemeProvider>
     </Router>

@@ -108,7 +108,7 @@ const MenuDrawer = ({ children }) => {
           {/* Desktop Menu */}
           <Box
             sx={{
-              display: "flex",
+              display: { xs: "none", md: "flex" },
               justifyContent: "flex-start",
               alignItems: "center",
               flexGrow: 1,
@@ -203,9 +203,14 @@ const MenuDrawer = ({ children }) => {
                 bgColor="inherit"
               />
             </Box>
-            <IconButton>
-              <AccountCircle />
-            </IconButton>
+            <Box
+              sx={{
+                display: { xs: "flex", md: "none" },
+                justifyContent: "flex-end",
+              }}
+            >
+              <AccountPopover />
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>

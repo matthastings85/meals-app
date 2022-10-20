@@ -1,5 +1,12 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Avatar, Box, Button, Container, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  Paper,
+  Typography,
+} from "@mui/material";
 import NavBtn from "../components/NavBtn";
 import { Create, FoodBankOutlined } from "@mui/icons-material";
 import CreateMealPlan from "../components/CreateMealPlan";
@@ -39,11 +46,20 @@ const MealPlans = () => {
       prepAvailable(user.mealPlans);
     }
   }, [user]);
+
+  const processDates = (startDate, length) => {
+    const start = new Date(startDate.replace(/-/g, "/"));
+    const end = new Date();
+
+    end.setDate(start.getDate() + (length - 1));
+
+    return { start, end };
+  };
   return (
     <Container component="main" maxWidth="100%">
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 4,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -66,22 +82,53 @@ const MealPlans = () => {
             <Typography component="h2" variant="h6">
               Plans
             </Typography>
-            {availablePlans.length > 0 &&
-              availablePlans.map((plan, index) => {
-                return (
-                  <Button
-                    onClick={() => {
-                      navigate("/mealplans/" + plan._id);
-
-                      // setMealPlan(plan);
-                      // setBuilding(true);
-                    }}
-                    key={index}
-                  >
-                    {plan.startDate}
-                  </Button>
-                );
-              })}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                gap: "10px",
+                width: 1,
+                maxWidth: 400,
+              }}
+            >
+              {availablePlans.length > 0 &&
+                availablePlans.map((plan, index) => {
+                  const { start, end } = processDates(
+                    plan.startDate,
+                    plan.length
+                  );
+                  return (
+                    <Paper sx={{ mt: 1, p: 1, textAlign: "center" }}>
+                      <Typography>
+                        {start.toLocaleDateString("en-us", {
+                          weekday: "short",
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </Typography>
+                      <Typography>to</Typography>
+                      <Typography>
+                        {end.toLocaleDateString("en-us", {
+                          weekday: "short",
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </Typography>
+                      <Button
+                        onClick={() => {
+                          navigate("/mealplans/" + plan._id);
+                        }}
+                        key={index}
+                      >
+                        View Plan
+                      </Button>
+                    </Paper>
+                  );
+                })}
+            </Box>
           </>
         )}
         {creating && <CreateMealPlan setCreating={setCreating} />}
