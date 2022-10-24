@@ -22,6 +22,7 @@ const CreateListFromMealPlan = ({ array, callback, listArray }) => {
             key={"mealPlan" + index}
             sx={{
               mt: 1,
+              width: 1,
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",

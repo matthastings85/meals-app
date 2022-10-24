@@ -29,6 +29,8 @@ const Home = () => {
           display: "flex",
           justifyContent: "space-around",
           flexWrap: "wrap",
+          gap: "20px",
+          mt: 2,
         }}
       >
         <HomeNavCard

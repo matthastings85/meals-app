@@ -31,7 +31,7 @@ const ShoppingLists = () => {
   };
 
   return (
-    <Container component="main" maxWidth="100%" sx={{ width: 400 }}>
+    <Container component="main" maxWidth="xs" sx={{ width: 1 }}>
       <Box
         sx={{
           marginTop: 1,
@@ -46,7 +46,6 @@ const ShoppingLists = () => {
         <Typography component="h1" variant="h4">
           Shopping Lists
         </Typography>
-
         <Box sx={{ width: 1, mt: 3 }}>
           {loading && <Spinner />}
           {plansArray.length > 0 && !loading && (

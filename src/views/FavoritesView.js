@@ -9,12 +9,8 @@ import { Context } from "../context";
 const FavoritesView = () => {
   const [user, setUser] = useContext(Context);
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   return (
-    <Container component="main" maxWidth="100%" sx={{ width: 400 }}>
+    <Container component="main" maxWidth="xs" sx={{ width: 1 }}>
       <Box
         sx={{
           marginTop: 4,
@@ -34,7 +30,7 @@ const FavoritesView = () => {
         user.recipes.map((item, index) => {
           console.log(item);
           return (
-            <Box sx={{ mb: 1 }}>
+            <Box key={index} sx={{ mb: 1 }}>
               <RecipePreviewCard key={index} item={item} />
             </Box>
           );

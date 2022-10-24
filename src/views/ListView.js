@@ -46,7 +46,7 @@ const ListView = () => {
   };
 
   return (
-    <Container component="main" maxWidth="100%" sx={{ mb: 8, width: 400 }}>
+    <Container component="main" maxWidth="xs" sx={{ mb: 8, width: 1 }}>
       <Box
         sx={{
           mt: 1,
@@ -62,64 +62,69 @@ const ListView = () => {
         <Typography component="h1" variant="h4">
           Shopping Lists
         </Typography>
-        {loading && <Spinner />}
       </Box>
-      <Accordion defaultExpanded>
-        <AccordionSummary
-          expandIcon={<ExpandMore />}
-          aria-controls="panel-content"
-          id="panel-header"
-        >
-          <Typography>Need To Acquire</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {list && list.length > 0 ? (
-            list.map((item, index) => {
-              return (
-                <ControlledCheckbox
-                  key={index}
-                  callback={handleCheck}
-                  index={index}
-                  label={item.name}
-                  content={item}
-                  defaultState={false}
-                />
-              );
-            })
-          ) : (
-            <Typography>
-              You have everything you need! Happy cooking!
-            </Typography>
-          )}
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMore />}
-          aria-controls="panel-content"
-          id="panel-header"
-        >
-          <Typography>Already Acquired</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {acquired && acquired.length > 0 ? (
-            acquired.map((item, index) => {
-              return (
-                <ControlledCheckbox
-                  key={index}
-                  callback={handleCheck}
-                  index={index}
-                  label={item.name}
-                  content={item}
-                  defaultState={true}
-                />
-              );
-            })
-          ) : (
-            <Typography>Start grabbing what you need...</Typography>
-          )}
-        </AccordionDetails>
-      </Accordion>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              aria-controls="panel-content"
+              id="panel-header"
+            >
+              <Typography>Need To Acquire</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {list && list.length > 0 ? (
+                list.map((item, index) => {
+                  return (
+                    <ControlledCheckbox
+                      key={index}
+                      callback={handleCheck}
+                      index={index}
+                      label={item.name}
+                      content={item}
+                      defaultState={false}
+                    />
+                  );
+                })
+              ) : (
+                <Typography>
+                  You have everything you need! Happy cooking!
+                </Typography>
+              )}
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              aria-controls="panel-content"
+              id="panel-header"
+            >
+              <Typography>Already Acquired</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {acquired && acquired.length > 0 ? (
+                acquired.map((item, index) => {
+                  return (
+                    <ControlledCheckbox
+                      key={index}
+                      callback={handleCheck}
+                      index={index}
+                      label={item.name}
+                      content={item}
+                      defaultState={true}
+                    />
+                  );
+                })
+              ) : (
+                <Typography>Start grabbing what you need...</Typography>
+              )}
+            </AccordionDetails>
+          </Accordion>
+        </>
+      )}
     </Container>
   );
 };

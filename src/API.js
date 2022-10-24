@@ -1,6 +1,9 @@
+// const baseUrl = "https://meals-app-backend.vercel.app";
+const baseUrl = "http://localhost:8000";
+
 export const API = {
   getUserData: async (id) => {
-    const url = "http://localhost:8000/api/get/" + id;
+    const url = baseUrl + "/api/get/" + id;
     const options = {
       method: "GET",
     };
@@ -13,7 +16,7 @@ export const API = {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    const url = "http://localhost:8000/api/login";
+    const url = baseUrl + "/api/login";
 
     const requestOptions = {
       method: "POST",
@@ -30,7 +33,7 @@ export const API = {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    const url = "http://localhost:8000/api/newuser/post";
+    const url = baseUrl + "/api/newuser/post";
 
     const requestOptions = {
       method: "POST",
@@ -47,7 +50,7 @@ export const API = {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    const url = "http://localhost:8000/api/newrecipe/post";
+    const url = baseUrl + "/api/newrecipe/post";
 
     const requestOptions = {
       method: "POST",
@@ -64,7 +67,7 @@ export const API = {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    const url = "http://localhost:8000/api/newlinkrecipe/post";
+    const url = baseUrl + "/api/newlinkrecipe/post";
 
     const requestOptions = {
       method: "POST",
@@ -78,7 +81,7 @@ export const API = {
       .catch((error) => console.log("error: ", error));
   },
   favoriteRecipe: async (recipe, source, userId) => {
-    const url = "http://localhost:8000/api/favoriterecipe/post";
+    const url = baseUrl + "/api/favoriterecipe/post";
 
     return await await API.postMethod({ recipe, source, userId }, url);
   },
@@ -122,34 +125,34 @@ export const API = {
       .catch((error) => console.log("error: ", error));
   },
   newMealPlan: async (mealPlan, userId) => {
-    const url = "http://localhost:8000/api/newmealplan/post";
+    const url = baseUrl + "/api/newmealplan/post";
 
     return await await API.postMethod({ mealPlan, userId }, url);
   },
   updateMealPlan: async (recipe, index, mealPlanId) => {
-    const url = "http://localhost:8000/api/updatemealplan/put";
+    const url = baseUrl + "/api/updatemealplan/put";
 
     console.log(recipe, index, mealPlanId);
 
     return await await API.putMethod({ recipe, index, mealPlanId }, url);
   },
   getMealPlan: async (id) => {
-    const url = "http://localhost:8000/api/getmealplan/get/" + id;
+    const url = baseUrl + "/api/getmealplan/get/" + id;
 
     return await await API.getMethod(url);
   },
   newList: async (list, userId, mealPlanId) => {
-    const url = "http://localhost:8000/api/newlist/post";
+    const url = baseUrl + "/api/newlist/post";
 
     return await await API.postMethod({ list, userId, mealPlanId }, url);
   },
   getList: async (id) => {
-    const url = "http://localhost:8000/api/getlist/get/" + id;
+    const url = baseUrl + "/api/getlist/get/" + id;
 
     return await await API.getMethod(url);
   },
   updateList: async (acquiredList, listList, listId) => {
-    const url = "http://localhost:8000/api/updatelist/put";
+    const url = baseUrl + "/api/updatelist/put";
 
     console.log(acquiredList, listList, listId);
 

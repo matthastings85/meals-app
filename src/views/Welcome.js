@@ -1,12 +1,4 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Container,
-  Typography,
-} from "@mui/material";
-import { textAlign } from "@mui/system";
+import { Box, Card, CardContent, Container, Typography } from "@mui/material";
 import Image from "mui-image";
 import React from "react";
 

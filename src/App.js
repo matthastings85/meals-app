@@ -75,6 +75,7 @@ function App() {
       console.log("no user");
     }
   }, [cookies]);
+
   return (
     <Router>
       <ThemeProvider theme={darkTheme}>

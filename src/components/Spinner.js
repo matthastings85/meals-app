@@ -1,3 +1,4 @@
+import { Box, CircularProgress } from "@mui/material";
 import React from "react";
 
 const Spinner = () => {
@@ -10,7 +11,11 @@ const Spinner = () => {
     animation: "spin 0.8s linear infinite",
     margin: "20px auto",
   };
-  return <div style={divStyle}></div>;
+  return (
+    <Box sx={{ display: "flex", justifyContent: "center", m: 2 }}>
+      <CircularProgress color="primary" />
+    </Box>
+  );
 };
 
 export default Spinner;

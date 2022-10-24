@@ -25,7 +25,7 @@ import {
   MenuBook,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Button, Link } from "@mui/material";
 import BasicPopover from "./BasicPopover";
 import AccountPopover from "./AccountPopover";
 import Image from "mui-image";
@@ -115,6 +115,7 @@ const MenuDrawer = ({ children }) => {
               mt: 0.5,
               mb: 0.5,
             }}
+            onClick={() => navigate("/")}
           >
             <Image
               src={Logo}
@@ -124,10 +125,11 @@ const MenuDrawer = ({ children }) => {
               easing="cubic-bezier(0.7, 0, 0.6, 1)"
               showLoading={true}
               errorIcon={true}
-              shift="null"
+              shift={null}
               distance="100px"
               shiftDuration={900}
               bgColor="inherit"
+              style={{ cursor: "pointer" }}
             />
           </Box>
           <Box
@@ -188,6 +190,7 @@ const MenuDrawer = ({ children }) => {
                 mt: 0.5,
                 mb: 0.5,
               }}
+              onClick={() => navigate("/")}
             >
               <Image
                 src={Logo}
@@ -197,10 +200,11 @@ const MenuDrawer = ({ children }) => {
                 easing="cubic-bezier(0.7, 0, 0.6, 1)"
                 showLoading={true}
                 errorIcon={true}
-                shift="null"
+                shift={null}
                 distance="100px"
                 shiftDuration={900}
                 bgColor="inherit"
+                style={{ cursor: "pointer" }}
               />
             </Box>
             <Box

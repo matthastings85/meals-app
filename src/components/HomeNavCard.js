@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const HomeNavCard = ({ to, icon, title }) => {
   const navigate = useNavigate();
   return (
-    <Card sx={{ width: 150, m: 2 }}>
+    <Card sx={{ width: 150 }}>
       <CardActionArea onClick={() => navigate("/" + to)}>
         <CardContent
           sx={{

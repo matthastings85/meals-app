@@ -6,12 +6,12 @@ import { RemoveCircleOutline } from "@mui/icons-material";
 const RecipePreviewCard = ({ item, enableRemove, callback }) => {
   const navigate = useNavigate();
   return (
-    <Card sx={{ width: "100%", display: "flex" }}>
+    <Card sx={{ width: 1, display: "flex" }}>
       {item.recipe.title !== "Leftovers" && (
         <CardMedia
           component="img"
-          height="150"
-          sx={{ width: 150, borderRadius: "2 0 0 2" }}
+          height="125"
+          sx={{ width: 125, borderRadius: "2 0 0 2" }}
           image={item.recipe.image}
           alt={item.recipe.title + " image"}
         />
