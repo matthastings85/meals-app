@@ -24,7 +24,7 @@ const Welcome = () => {
         easing="cubic-bezier(0.7, 0, 0.6, 1)"
         showLoading={true}
         errorIcon={true}
-        shift="null"
+        shift={null}
         distance="100px"
         shiftDuration={900}
         bgColor="inherit"

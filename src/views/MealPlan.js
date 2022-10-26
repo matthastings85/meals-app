@@ -48,18 +48,26 @@ const MealPlan = () => {
     <Container component="main" maxWidth="100%">
       <Box
         sx={{
-          mt: 1,
+          mt: 2,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <FoodBankOutlined />
-        </Avatar>
-        <Typography component="h1" variant="h4">
-          Meal Plans
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
+            <FoodBankOutlined />
+          </Avatar>
+          <Typography component="h1" variant="h4">
+            Meal Plan
+          </Typography>
+        </Box>
         {error && <Alert severity="error">{errorMessage}</Alert>}
         {startDate && (
           <Typography sx={{ mt: 2 }} component="h1" variant="h6">

@@ -34,18 +34,26 @@ const ShoppingLists = () => {
     <Container component="main" maxWidth="xs" sx={{ width: 1 }}>
       <Box
         sx={{
-          marginTop: 1,
+          marginTop: 2,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <ListRounded />
-        </Avatar>
-        <Typography component="h1" variant="h4">
-          Shopping Lists
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
+            <ListRounded />
+          </Avatar>
+          <Typography component="h1" variant="h4">
+            Shopping Lists
+          </Typography>
+        </Box>
         <Box sx={{ width: 1, mt: 3 }}>
           {loading && <Spinner />}
           {plansArray.length > 0 && !loading && (

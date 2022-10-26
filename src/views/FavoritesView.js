@@ -13,25 +13,33 @@ const FavoritesView = () => {
     <Container component="main" maxWidth="xs" sx={{ width: 1 }}>
       <Box
         sx={{
-          marginTop: 4,
+          mt: 2,
+          mb: 1,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <Favorite />
-        </Avatar>
-        <Typography component="h1" variant="h4">
-          Favorites
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
+            <Favorite />
+          </Avatar>
+          <Typography component="h1" variant="h4">
+            Favorites
+          </Typography>
+        </Box>
       </Box>
       {user &&
         user.recipes.map((item, index) => {
-          console.log(item);
           return (
             <Box key={index} sx={{ mb: 1 }}>
-              <RecipePreviewCard key={index} item={item} />
+              <RecipePreviewCard key={index} item={item.recipe} />
             </Box>
           );
         })}

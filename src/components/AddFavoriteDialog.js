@@ -22,7 +22,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 const AddFavoriteDialog = ({ addFavorite }) => {
-  const [user, setUser] = useContext(Context);
+  const [user, _setUser] = useContext(Context);
   const [open, setOpen] = useState(false);
   // const { favorites, loading, error } = useGetFavorites(user.recipes);
 
@@ -31,9 +31,7 @@ const AddFavoriteDialog = ({ addFavorite }) => {
   };
   return (
     <>
-      <Button onClick={toggleOpen} sx={{ mt: 1 }}>
-        Add Favorite
-      </Button>
+      <Button onClick={toggleOpen}>Add Favorite</Button>
       <Dialog
         TransitionComponent={Transition}
         fullWidth

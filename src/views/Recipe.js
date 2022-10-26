@@ -16,15 +16,12 @@ const Recipe = () => {
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 2,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <FoodBankOutlined />
-        </Avatar>
         {loading && <Spinner />}
         {error && <div>Something went wrong...</div>}
         {recipe && <RecipeCard recipe={recipe} />}

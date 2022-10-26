@@ -3,17 +3,23 @@ import { Box, Button, Card, CardMedia, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { RemoveCircleOutline } from "@mui/icons-material";
 
-const RecipePreviewCard = ({ item, enableRemove, callback }) => {
+const RecipePreviewCard = ({
+  item,
+  enableRemove,
+  callback,
+  enablePreview,
+  setPreview,
+}) => {
   const navigate = useNavigate();
   return (
     <Card sx={{ width: 1, display: "flex" }}>
-      {item.recipe.title !== "Leftovers" && (
+      {item.title !== "Leftovers" && (
         <CardMedia
           component="img"
           height="125"
           sx={{ width: 125, borderRadius: "2 0 0 2" }}
-          image={item.recipe.image}
-          alt={item.recipe.title + " image"}
+          image={item.image}
+          alt={item.title + " image"}
         />
       )}
       <Box
@@ -27,14 +33,14 @@ const RecipePreviewCard = ({ item, enableRemove, callback }) => {
       >
         <Box>
           <Typography component="h3" variant="subtitle2">
-            {item.recipe.title}
+            {item.title}
           </Typography>
           <Typography
             variant="subtitle2"
             color="text.secondary"
             component="div"
           >
-            {item.recipe.sourceName}
+            {item.sourceName}
           </Typography>
         </Box>
         <Box
@@ -43,13 +49,22 @@ const RecipePreviewCard = ({ item, enableRemove, callback }) => {
             justifyContent: "space-around",
           }}
         >
-          {item.recipe.title !== "Leftovers" && (
+          {item.title !== "Leftovers" && !enablePreview && (
             <Button
               onClick={() => {
-                navigate("/recipes/" + item.recipe.id);
+                navigate("/recipes/" + item.id);
               }}
             >
               View Recipe
+            </Button>
+          )}
+          {enablePreview && (
+            <Button
+              onClick={() => {
+                setPreview(item);
+              }}
+            >
+              Preview
             </Button>
           )}
           {enableRemove && (

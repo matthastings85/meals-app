@@ -49,19 +49,27 @@ const ListView = () => {
     <Container component="main" maxWidth="xs" sx={{ mb: 8, width: 1 }}>
       <Box
         sx={{
-          mt: 1,
-          mb: 3,
+          mt: 2,
+          mb: 2,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <ListRounded />
-        </Avatar>
-        <Typography component="h1" variant="h4">
-          Shopping Lists
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
+            <ListRounded />
+          </Avatar>
+          <Typography component="h1" variant="h4">
+            Shopping List
+          </Typography>
+        </Box>
       </Box>
       {loading ? (
         <Spinner />

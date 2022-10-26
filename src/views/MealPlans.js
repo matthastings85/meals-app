@@ -21,7 +21,6 @@ const MealPlans = () => {
   const [user, _setUser] = useContext(Context);
   const navigate = useNavigate();
   const [creating, setCreating] = useState(false);
-  const [building, _setBuilding] = useState(false);
 
   const mealPlansArray = user ? user.mealPlans : [];
   const { plansArray, loading } = useGetMealPlans(mealPlansArray);
@@ -43,20 +42,28 @@ const MealPlans = () => {
     <Container component="main" maxWidth="100%">
       <Box
         sx={{
-          marginTop: 4,
+          marginTop: 2,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <FoodBankOutlined />
-        </Avatar>
-        <Typography component="h1" variant="h4">
-          Meal Plans
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
+            <FoodBankOutlined />
+          </Avatar>
+          <Typography component="h1" variant="h4">
+            Meal Plans
+          </Typography>
+        </Box>
         {/* create new plan */}
-        {!creating && !building && (
+        {!creating && (
           <>
             <NavBtn
               callback={createPlan}

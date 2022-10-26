@@ -22,6 +22,7 @@ import { Context } from "../context";
 import { useNavigate } from "react-router-dom";
 import AddFavoriteDialog from "./AddFavoriteDialog";
 import RecipePreviewCard from "./RecipePreviewCard";
+import SearchDialog from "./SearchDialog";
 
 const MealPlanCard = ({ index, item, mealPlan, setMealPlan }) => {
   const [user, setUser] = useContext(Context);
@@ -44,9 +45,7 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan }) => {
   };
 
   // Get recipe info
-  const handleSelect = async (event) => {
-    const recipe = await FOODAPI.getRecipe(event.currentTarget.id);
-
+  const handleSelect = async (recipe) => {
     const result = await API.updateMealPlan(recipe, index, mealPlan._id);
 
     console.log(result);
@@ -54,7 +53,19 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan }) => {
     // Update mealPlan state
     setMealPlan(result.data);
     toggleSearching();
+    toggleOptions();
   };
+  // const handleSelect = async (event) => {
+  //   const recipe = await FOODAPI.getRecipe(event.currentTarget.id);
+
+  //   const result = await API.updateMealPlan(recipe, index, mealPlan._id);
+
+  //   console.log(result);
+
+  //   // Update mealPlan state
+  //   setMealPlan(result.data);
+  //   toggleSearching();
+  // };
 
   const handleRemove = async () => {
     const recipe = { title: "recipe goes here" };
@@ -93,7 +104,7 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan }) => {
   }, []);
 
   return (
-    <Card sx={{ maxWidth: "400px", width: 1, mt: 1 }}>
+    <Card sx={{ width: 1, maxWidth: "sm", mt: 1 }}>
       <CardHeader
         action={
           <IconButton aria-label="settings">
@@ -110,8 +121,8 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan }) => {
               <Button onClick={toggleOptions}>Add Meal</Button>
             )}
           {options && (
-            <Box>
-              <Button
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              {/* <Button
                 sx={{ mt: 1 }}
                 onClick={() => {
                   toggleOptions();
@@ -119,14 +130,16 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan }) => {
                 }}
               >
                 Search
-              </Button>
+              </Button> */}
+              <SearchDialog
+                toggleSearching={toggleSearching}
+                callback={handleSelect}
+              />
               <AddFavoriteDialog addFavorite={addFavorite} />
-              <Button onClick={handleLeftovers} sx={{ mt: 1 }}>
-                Leftovers
-              </Button>
+              <Button onClick={handleLeftovers}>Leftovers</Button>
             </Box>
           )}
-          {searching && (
+          {/* {searching && (
             <Box sx={{ display: "flex" }}>
               <SearchByName callback={handleSelect} />
               <IconButton
@@ -137,10 +150,10 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan }) => {
                 <CancelPresentation />
               </IconButton>
             </Box>
-          )}
+          )} */}
           {item.recipe.title !== "recipe goes here" && (
             <RecipePreviewCard
-              item={item}
+              item={item.recipe}
               enableRemove
               callback={handleRemove}
             />
