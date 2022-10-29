@@ -113,8 +113,8 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan }) => {
         }
         subheader={date}
       />
-      <CardContent sx={{ width: "100%" }}>
-        <Box sx={{ width: "100%", display: "flex", flexDirection: "column" }}>
+      <CardContent sx={{ width: 1 }}>
+        <Box sx={{ width: 1, display: "flex", flexDirection: "column" }}>
           {!options &&
             !searching &&
             item.recipe.title === "recipe goes here" && (

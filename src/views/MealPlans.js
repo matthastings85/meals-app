@@ -16,6 +16,7 @@ import { Context } from "../context";
 import { useNavigate } from "react-router-dom";
 import useGetMealPlans from "../hooks/useGetMealPlans";
 import Spinner from "../components/Spinner";
+import MealPlanOverviewCard from "../components/MealPlanOverviewCard";
 
 const MealPlans = () => {
   const [user, _setUser] = useContext(Context);
@@ -27,15 +28,6 @@ const MealPlans = () => {
 
   const createPlan = () => {
     setCreating(true);
-  };
-
-  const processDates = (startDate, length) => {
-    const start = new Date(startDate.replace(/-/g, "/"));
-    const end = new Date();
-
-    end.setDate(start.getDate() + (length - 1));
-
-    return { start, end };
   };
 
   return (
@@ -83,47 +75,12 @@ const MealPlans = () => {
                   flexWrap: "wrap",
                   gap: "10px",
                   width: 1,
-                  maxWidth: 400,
+                  maxWidth: "sm",
                 }}
               >
                 {plansArray.length > 0 &&
                   plansArray.map((plan, index) => {
-                    const { start, end } = processDates(
-                      plan.startDate,
-                      plan.length
-                    );
-                    return (
-                      <Paper
-                        key={index}
-                        sx={{ mt: 1, p: 1, textAlign: "center" }}
-                      >
-                        <Typography>
-                          {start.toLocaleDateString("en-us", {
-                            weekday: "short",
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </Typography>
-                        <Typography>to</Typography>
-                        <Typography>
-                          {end.toLocaleDateString("en-us", {
-                            weekday: "short",
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </Typography>
-                        <Button
-                          onClick={() => {
-                            navigate("/mealplans/" + plan._id);
-                          }}
-                          key={index}
-                        >
-                          View Plan
-                        </Button>
-                      </Paper>
-                    );
+                    return <MealPlanOverviewCard key={index} plan={plan} />;
                   })}
               </Box>
             )}

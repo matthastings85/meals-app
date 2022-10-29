@@ -13,7 +13,7 @@ const Recipe = () => {
   const { recipe, loading, error } = useFetchRecipe(recipeId);
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <Box
         sx={{
           marginTop: 2,

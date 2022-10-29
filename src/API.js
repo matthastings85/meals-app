@@ -1,5 +1,5 @@
 const baseUrl = "https://meals-app-backend.vercel.app";
-// const baseUrl = "http://alocalhost:8000";
+// const baseUrl = "http://localhost:8000";
 
 export const API = {
   getUserData: async (id) => {
@@ -124,6 +124,15 @@ export const API = {
       .json()
       .catch((error) => console.log("error: ", error));
   },
+  deleteMethod: async (url) => {
+    const options = {
+      method: "DELETE",
+    };
+
+    return await (await fetch(url, options))
+      .json()
+      .catch((error) => console.log("error: ", error));
+  },
   newMealPlan: async (mealPlan, userId) => {
     const url = baseUrl + "/api/newmealplan/post";
 
@@ -140,6 +149,11 @@ export const API = {
     const url = baseUrl + "/api/getmealplan/get/" + id;
 
     return await await API.getMethod(url);
+  },
+  deleteMealPlan: async (id, userId) => {
+    const url = baseUrl + `/api/deletemealplan/delete/${id}&${userId}`;
+
+    return await await API.deleteMethod(url);
   },
   newList: async (list, userId, mealPlanId) => {
     const url = baseUrl + "/api/newlist/post";

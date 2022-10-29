@@ -14,7 +14,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { API } from "../API";
 import { useCookies } from "react-cookie";
 import { RestaurantMenu } from "@mui/icons-material";
-import { List, ListItem, ListItemText } from "@mui/material";
+import { Box, Chip, List, ListItem, ListItemText } from "@mui/material";
 
 // Context
 import { Context } from "../context";
@@ -88,18 +88,26 @@ export default function RecipeCard({ recipe }) {
         alt={recipe.title + " image"}
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          Prep Time: {recipe.preparationMinutes} mins
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Cook Time: {recipe.cookingMinutes} mins
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Serves: {recipe.servings}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Likes: {recipe.aggregateLikes}
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+            gap: "10px",
+            mb: 2,
+          }}
+        >
+          <Chip
+            label={`Prep Time: ${recipe.preparationMinutes} mins`}
+            variant="outlined"
+          />
+          <Chip
+            label={`Cook Time: ${recipe.cookingMinutes} mins`}
+            variant="outlined"
+          />
+          <Chip label={`Serves: ${recipe.servings}`} variant="outlined" />
+          <Chip label={`Likes: ${recipe.aggregateLikes}`} variant="outlined" />
+        </Box>
         <Typography component="h3" variant="h6">
           Ingredients
         </Typography>
