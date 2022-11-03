@@ -3,11 +3,9 @@ import {
   Button,
   Card,
   CardActions,
-  CardContent,
   CardHeader,
   IconButton,
   Popover,
-  Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Archive, Delete, MoreVert } from "@mui/icons-material";
@@ -61,7 +59,7 @@ const MealPlanOverviewCard = ({ plan }) => {
             <MoreVert />
           </IconButton>
         }
-        title={`${plan.length} day Meal Plan`}
+        title={`${plan.length} Day Meal Plan`}
         subheader={`${start.toLocaleDateString("en-us", {
           weekday: "short",
           year: "numeric",

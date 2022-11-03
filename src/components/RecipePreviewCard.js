@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Card, CardMedia, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { RemoveCircleOutline } from "@mui/icons-material";
+import placeholder from "../images/placeholder-square.jpg";
 
 const RecipePreviewCard = ({
   item,
@@ -9,6 +10,7 @@ const RecipePreviewCard = ({
   callback,
   enablePreview,
   setPreview,
+  setSelected,
 }) => {
   const navigate = useNavigate();
   return (
@@ -18,7 +20,7 @@ const RecipePreviewCard = ({
           component="img"
           height="125"
           sx={{ width: 125, borderRadius: "2 0 0 2" }}
-          image={item.image}
+          image={item.image ? item.image : placeholder}
           alt={item.title + " image"}
         />
       )}
@@ -52,7 +54,7 @@ const RecipePreviewCard = ({
           {item.title !== "Leftovers" && !enablePreview && (
             <Button
               onClick={() => {
-                navigate("/recipes/" + item.id);
+                setSelected(item);
               }}
             >
               View Recipe

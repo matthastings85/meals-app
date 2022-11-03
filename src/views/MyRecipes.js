@@ -1,12 +1,11 @@
-import { Favorite } from "@mui/icons-material";
+import React, { useContext, useState } from "react";
 import { Avatar, Box, Button, Container, Typography } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
-import MealPlanCard from "../components/MealPlanCard";
-import RecipeCard from "../components/RecipeCard";
-import RecipePreviewCard from "../components/RecipePreviewCard";
+import { Favorite } from "@mui/icons-material";
 import { Context } from "../context";
+import RecipePreviewCard from "../components/RecipePreviewCard";
+import RecipeCard from "../components/RecipeCard";
 
-const FavoritesView = () => {
+const MyRecipes = () => {
   const [user, setUser] = useContext(Context);
   const [selected, setSelected] = useState(null);
 
@@ -38,12 +37,12 @@ const FavoritesView = () => {
       </Box>
       {user &&
         !selected &&
-        user.favorites.map((item, index) => {
+        user.recipes.map((item, index) => {
           return (
             <Box key={index} sx={{ mb: 1 }}>
               <RecipePreviewCard
                 key={index}
-                item={item.recipe}
+                item={item}
                 setSelected={setSelected}
               />
             </Box>
@@ -64,4 +63,4 @@ const FavoritesView = () => {
   );
 };
 
-export default FavoritesView;
+export default MyRecipes;

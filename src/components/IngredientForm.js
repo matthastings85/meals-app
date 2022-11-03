@@ -1,105 +1,56 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  List,
-  ListItem,
-  ListItemText,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, List, ListItem, ListItemText } from "@mui/material";
 import React, { useState } from "react";
+import AddIngredientDialog from "./AddIngredientDialog";
 
-const IngredientForm = ({ ingredients, setIngredients, setProgress }) => {
-  const [ingredientName, setIngredientName] = useState("");
-  const [measure, setMeasure] = useState("");
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const ingredientName = data.get("ingredientName");
-    const measure = data.get("measure");
-
-    setIngredients([...ingredients, { ingredientName, measure }]);
-    setIngredientName("");
-    setMeasure("");
-  };
-
-  const handleNext = () => {
-    console.log("next");
-    console.log(ingredients);
-    setProgress((prevProgress) => prevProgress + 1);
-  };
-  const handleBack = () => {
-    console.log("back");
-    setProgress((prevProgress) => prevProgress - 1);
+const IngredientForm = ({
+  ingredients,
+  setIngredients,
+  handleNext,
+  handleBack,
+}) => {
+  const addIngredient = (ingredient) => {
+    console.log(ingredient);
+    setIngredients((prev) => [...prev, ingredient]);
   };
 
   return (
     <>
       {ingredients.length > 0 && (
-        <List>
+        <List disablePadding>
           {ingredients.map((item) => {
             return (
-              <ListItem key={item.ingredientName}>
+              <ListItem disablePadding key={item.name}>
                 <ListItemText
-                  primary={item.ingredientName}
-                  secondary={item.measure}
+                  primary={item.name}
+                  secondary={item.amount + " " + item.unit}
                 />
               </ListItem>
             );
           })}
         </List>
       )}
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography component="h2" variant="h6" sx={{ mt: 3 }}>
-              Ingredients
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <TextField
-              required
-              variant="standard"
-              fullWidth
-              id="measure"
-              label="Measure"
-              name="measure"
-              value={measure}
-              onChange={(event) => setMeasure(event.target.value)}
-            />
-          </Grid>
-          <Grid item xs={8}>
-            <TextField
-              name="ingredientName"
-              required
-              fullWidth
-              id="ingredientName"
-              label="Ingredient Name"
-              autoFocus
-              variant="standard"
-              value={ingredientName}
-              onChange={(event) => setIngredientName(event.target.value)}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Button type="submit">Add Ingredient</Button>
-          </Grid>
-        </Grid>
-      </Box>
-      <Button onClick={handleBack} variant="contained" sx={{ mt: 3, mb: 2 }}>
-        Back
+      <AddIngredientDialog addIngredient={addIngredient} />
+      <Button variant="contained" onClick={handleNext} sx={{ mt: 3, mr: 1 }}>
+        Continue
       </Button>
-      <Button onClick={handleNext} variant="contained" sx={{ mt: 3, mb: 2 }}>
-        Next
+      <Button onClick={handleBack} sx={{ mt: 3, mr: 1 }}>
+        Back
       </Button>
     </>
   );
 };
 
 export default IngredientForm;
+
+const recipe = {
+  id: 0,
+  title: "",
+  sourceName: "",
+  image: "url",
+  preparationMinutes: 0,
+  cookingMinutes: 0,
+  servings: 0,
+  aggregateLikes: 0,
+  extendedIngredients: [{ amount: "", unit: "", name: "", id: "" }],
+  analyzedInstructions: [{ steps: [{ number: 1, step: "" }] }],
+};

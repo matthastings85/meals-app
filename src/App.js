@@ -26,6 +26,7 @@ import MenuDrawer from "./components/MenuDrawer";
 import ListView from "./views/ListView";
 import FavoritesView from "./views/FavoritesView";
 import Footer from "./components/Footer";
+import MyRecipes from "./views/MyRecipes";
 
 const theme = createTheme({
   palette: {
@@ -92,6 +93,7 @@ function App() {
             <Route path="/lists" element={<ShoppingLists />} />
             <Route path="/lists/:listId" element={<ListView />} />
             <Route path="/favorites" element={<FavoritesView />} />
+            <Route path="/myrecipes" element={<MyRecipes />} />
             <Route path="/" element={user ? <Home /> : <Welcome />} />
           </Routes>
           <Footer />

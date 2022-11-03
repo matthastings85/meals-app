@@ -1,78 +1,42 @@
-import {
-  Box,
-  Button,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, List, ListItem, ListItemText } from "@mui/material";
 import React, { useState } from "react";
+import AddInstructionDialog from "./AddInstructionDialog";
 
-const RecipeInstructions = ({ instructions, setInstructions, setProgress }) => {
-  const [instruction, setInstruction] = useState("");
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const instruction = data.get("instruction");
-
-    setInstructions([...instructions, instruction]);
-    setInstruction("");
+const RecipeInstructions = ({
+  instructions,
+  setInstructions,
+  handleNext,
+  handleBack,
+}) => {
+  const addInstruction = (instruction) => {
+    console.log(instruction);
+    const newInstruction = {
+      number: instructions.length + 1,
+      step: instruction,
+    };
+    setInstructions((prev) => [...prev, newInstruction]);
   };
 
-  const handleNext = () => {
-    console.log("next");
-    console.log(instructions);
-    setProgress((prevProgress) => prevProgress + 1);
-  };
-  const handleBack = () => {
-    console.log("back");
-    setProgress((prevProgress) => prevProgress - 1);
-  };
   return (
     <>
       {instructions.length > 0 && (
         <List>
-          {instructions.map((item) => {
+          {instructions.map((item, index) => {
             return (
-              <ListItem key={item}>
-                <ListItemText primary={item} />
+              <ListItem disablePadding key={index}>
+                <ListItemText primary={item.step} />
               </ListItem>
             );
           })}
         </List>
       )}
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography component="h2" variant="h6" sx={{ mt: 3 }}>
-              Instructions
-            </Typography>
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              required
-              variant="standard"
-              fullWidth
-              multiline={true}
-              id="instruction"
-              label="Instruction"
-              name="instruction"
-              value={instruction}
-              onChange={(event) => setInstruction(event.target.value)}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <Button type="submit">Add Instruction</Button>
-          </Grid>
-        </Grid>
-        <Button onClick={handleBack} variant="contained" sx={{ mt: 3, mb: 2 }}>
-          Back
+      <AddInstructionDialog addInstruction={addInstruction} />
+      <Box sx={{ mt: 1 }}>
+        <Button onClick={handleNext} variant="contained" sx={{ mt: 3, mr: 1 }}>
+          Continue
         </Button>
-        <Button onClick={handleNext} variant="contained" sx={{ mt: 3, mb: 2 }}>
-          Next
+        <Button onClick={handleBack} sx={{ mt: 3, mr: 1 }}>
+          Back
         </Button>
       </Box>
     </>

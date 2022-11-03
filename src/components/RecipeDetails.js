@@ -1,64 +1,44 @@
-import { Alert, Box, Button, Grid, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { Alert, Box, Button, Grid, TextField } from "@mui/material";
 
-const RecipeDetails = ({ setRecipeDetails, setProgress }) => {
+const RecipeDetails = ({ recipeDetails, setRecipeDetails, handleNext }) => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  // const [equipmentArray, setEquipmentArray] = useState([1]);
+  const [name, setName] = useState(recipeDetails.name);
+  const [prepTime, setPrepTime] = useState(recipeDetails.prepTime);
+  const [cookTime, setCookTime] = useState(recipeDetails.cookTime);
+  const [serves, setServes] = useState(recipeDetails.serves);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const recipeName = data.get("recipeName");
-    const prepTime = parseInt(data.get("prepTime"));
-    const cookTime = parseInt(data.get("cookTime"));
-    const serves = parseInt(data.get("serves"));
-    console.log({ recipeName, prepTime, cookTime, serves });
-
-    if (recipeName === "") {
-      setErrorMessage("Recipe Name is required");
+  const next = () => {
+    if (name === "") {
       setError(true);
+      setErrorMessage("A recipe name is required");
+      return;
+    } else {
+      handleNext();
     }
-
-    setRecipeDetails({ recipeName, prepTime, cookTime, serves });
-    setProgress((prevProgress) => prevProgress + 1);
   };
 
-  // const handleAdd = () => {
-  //   console.log("add");
-  //   setEquipmentArray([...equipmentArray, 1]);
-  // };
-
-  // const Equipment = ({ index }) => {
-  //   return (
-  //     <Grid item xs={12} sx={{ mt: 0 }}>
-  //       <TextField
-  //         variant="standard"
-  //         fullWidth
-  //         id={"equipment" + index}
-  //         label="Equipment Name"
-  //         name={"equipment" + index}
-  //       />
-  //     </Grid>
-  //   );
-  // };
-
-  // useEffect(() => {}, [equipmentArray]);
+  useEffect(() => {
+    setRecipeDetails({ name, prepTime, cookTime, serves });
+  }, [name, prepTime, cookTime, serves]);
 
   return (
     <>
       {error && <Alert severity="error">{errorMessage}</Alert>}
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+      {/* <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}> */}
+      <Box sx={{ mt: 1 }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              name="recipeName"
               required
               fullWidth
               id="recipeName"
               label="Recipe Name"
               autoFocus
               variant="standard"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
             />
           </Grid>
           <Grid item xs={4}>
@@ -67,8 +47,9 @@ const RecipeDetails = ({ setRecipeDetails, setProgress }) => {
               fullWidth
               id="prepTime"
               label="Prep Time"
-              name="prepTime"
               type="number"
+              value={prepTime}
+              onChange={(event) => setPrepTime(event.target.value)}
             />
           </Grid>
           <Grid item xs={4}>
@@ -77,8 +58,9 @@ const RecipeDetails = ({ setRecipeDetails, setProgress }) => {
               fullWidth
               id="cookTime"
               label="Cook Time"
-              name="cookTime"
               type="number"
+              value={cookTime}
+              onChange={(event) => setCookTime(event.target.value)}
             />
           </Grid>
           <Grid item xs={4}>
@@ -87,25 +69,14 @@ const RecipeDetails = ({ setRecipeDetails, setProgress }) => {
               fullWidth
               id="serves"
               label="Serves"
-              name="serves"
               type="number"
+              value={serves}
+              onChange={(event) => setServes(event.target.value)}
             />
           </Grid>
-          {/* <Grid item xs={12}>
-          <Typography component="h2" variant="h6" sx={{ mt: 3, mb: 0 }}>
-            Tools & Equipment Needed
-          </Typography>
         </Grid>
-        {equipmentArray.map((item, index) => {
-          return <Equipment index={index} />;
-        })}
-        <Grid item xs={6}>
-          <Button onClick={handleAdd}>Add Equipment</Button>
-        </Grid> */}
-        </Grid>
-
-        <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-          Next
+        <Button variant="contained" onClick={next} sx={{ mt: 3, mb: 2 }}>
+          Continue
         </Button>
       </Box>
     </>

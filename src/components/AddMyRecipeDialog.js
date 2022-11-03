@@ -19,7 +19,7 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />;
 });
 
-const AddFavoriteDialog = ({ addRecipe }) => {
+const AddMyRecipeDialog = ({ addRecipe }) => {
   const [user, _setUser] = useContext(Context);
   const [open, setOpen] = useState(false);
 
@@ -28,7 +28,7 @@ const AddFavoriteDialog = ({ addRecipe }) => {
   };
   return (
     <>
-      <Button onClick={toggleOpen}>Favorites</Button>
+      <Button onClick={toggleOpen}>My Recipes</Button>
       <Dialog
         TransitionComponent={Transition}
         fullWidth
@@ -37,7 +37,7 @@ const AddFavoriteDialog = ({ addRecipe }) => {
         onClose={toggleOpen}
       >
         <DialogTitle>
-          Favorites
+          My Recipes
           <IconButton
             aria-label="close"
             onClick={toggleOpen}
@@ -54,20 +54,20 @@ const AddFavoriteDialog = ({ addRecipe }) => {
 
         <DialogContent>
           <List>
-            {user.favorites.length > 0 &&
-              user.favorites.map((item, index) => {
+            {user.recipes.length > 0 &&
+              user.recipes.map((item, index) => {
                 return (
                   <ListItem
                     key={index}
                     button
                     onClick={() => {
-                      addRecipe(item.recipe);
+                      addRecipe(item);
                     }}
                   >
                     <ListItemAvatar>
-                      <Avatar alt={item.recipe.title} src={item.recipe.image} />
+                      <Avatar alt={item.title} src={item.image} />
                     </ListItemAvatar>
-                    <ListItemText primary={item.recipe.title} />
+                    <ListItemText primary={item.title} />
                   </ListItem>
                 );
               })}
@@ -78,4 +78,4 @@ const AddFavoriteDialog = ({ addRecipe }) => {
   );
 };
 
-export default AddFavoriteDialog;
+export default AddMyRecipeDialog;

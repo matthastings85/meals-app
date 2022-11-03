@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { FoodBankOutlined } from "@mui/icons-material";
-import { Avatar, Box, Container } from "@mui/material";
+import React from "react";
+
+import { Box, Container } from "@mui/material";
 import { useParams } from "react-router-dom";
 
 import useFetchRecipe from "../hooks/useFetchRecipe";

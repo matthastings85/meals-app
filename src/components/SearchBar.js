@@ -21,7 +21,7 @@ const SearchBar = ({ setSearchTerm }) => {
   return (
     <TextField
       fullWidth
-      label="Search Recipes"
+      label="Search"
       name="search"
       onChange={(e) => setState(e.currentTarget.value)}
       value={state}

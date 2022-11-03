@@ -52,6 +52,36 @@ export const FOODAPI = {
 
     return results;
   },
+  searchIngredients: async (query) => {
+    const options = {
+      method: "GET",
+      url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/ingredients/autocomplete",
+      params: {
+        query: query,
+        number: 10,
+        metaInformation: true,
+      },
+      headers: {
+        "X-RapidAPI-Key": process.env.REACT_APP_SPOONACULAR_KEY,
+        "X-RapidAPI-Host":
+          "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+      },
+    };
+
+    let results;
+
+    await axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data);
+        results = response.data;
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+
+    return results;
+  },
   getRecipe: async (id) => {
     const options = {
       method: "GET",

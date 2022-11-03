@@ -43,7 +43,7 @@ export default function SignIn() {
       setResponseError(false);
       console.log("result: ", result);
       setUser(result.data);
-      setCookie("userId", result.data.id, { path: "/" });
+      setCookie("userId", result.data.userId, { path: "/" });
       navigate("/");
     }
   };
@@ -104,7 +104,6 @@ export default function SignIn() {
             }
             label="Remember me"
           />
-          {rememberMe ? <div>true</div> : <div>false</div>}
           <Button
             type="submit"
             fullWidth

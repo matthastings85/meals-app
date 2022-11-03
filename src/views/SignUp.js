@@ -79,7 +79,7 @@ export default function SignUp() {
     } else {
       console.log("result: ", result);
       setUser(result.data);
-      setCookie("userId", result.data.id, { path: "/" });
+      setCookie("userId", result.data.userId, { path: "/" });
       navigate("/");
     }
   };
@@ -156,7 +156,7 @@ export default function SignUp() {
                     onChange={handleChange}
                     defaultChecked
                     value="allowExtraEmails"
-                    color="secondary"
+                    color="primary"
                   />
                 }
                 label="I want to receive inspiration, marketing promotions and updates via email."

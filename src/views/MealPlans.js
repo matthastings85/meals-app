@@ -62,9 +62,6 @@ const MealPlans = () => {
               text="Create Plan"
               icon={<Create />}
             />
-            <Typography component="h2" variant="h6">
-              Plans
-            </Typography>
             {loading ? (
               <Spinner />
             ) : (

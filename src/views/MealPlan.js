@@ -5,10 +5,11 @@ import { useParams } from "react-router-dom";
 import { API } from "../API";
 
 // Components
-import { Alert, Avatar, Typography } from "@mui/material";
+import { Alert, Avatar, Button, Typography } from "@mui/material";
 import MealPlanCard from "../components/MealPlanCard";
 import { Box, Container } from "@mui/system";
 import { FoodBankOutlined } from "@mui/icons-material";
+import RecipeCard from "../components/RecipeCard";
 
 const MealPlan = () => {
   const { mealPlanId } = useParams();
@@ -16,6 +17,7 @@ const MealPlan = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [startDate, setStartDate] = useState(null);
+  const [selected, setSelected] = useState(null);
 
   const getMealPlan = useCallback(async (mealPlanId) => {
     const result = await API.getMealPlan(mealPlanId);
@@ -54,27 +56,41 @@ const MealPlan = () => {
           alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-            <FoodBankOutlined />
-          </Avatar>
-          <Typography component="h1" variant="h4">
-            Meal Plan
-          </Typography>
-        </Box>
+        {!selected && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
+              <FoodBankOutlined />
+            </Avatar>
+            <Typography component="h1" variant="h4">
+              Meal Plan
+            </Typography>
+          </Box>
+        )}
         {error && <Alert severity="error">{errorMessage}</Alert>}
-        {startDate && (
+        {startDate && !selected && (
           <Typography sx={{ mt: 2 }} component="h1" variant="h6">
             Meal Plan for {startDate}
           </Typography>
         )}
+        {selected && (
+          <>
+            <Button
+              sx={{ alignSelf: "flex-start" }}
+              onClick={() => setSelected(null)}
+            >
+              back
+            </Button>
+            <RecipeCard recipe={selected} />
+          </>
+        )}
         {mealPlan &&
+          !selected &&
           mealPlan.plan.length > 0 &&
           mealPlan.plan.map((item, index) => {
             // console.log(item);
@@ -85,6 +101,7 @@ const MealPlan = () => {
                 item={item}
                 mealPlan={mealPlan}
                 setMealPlan={setMealPlan}
+                setSelected={setSelected}
               />
             );
           })}

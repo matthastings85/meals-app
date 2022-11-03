@@ -15,6 +15,7 @@ import { API } from "../API";
 import { useCookies } from "react-cookie";
 import { RestaurantMenu } from "@mui/icons-material";
 import { Box, Chip, List, ListItem, ListItemText } from "@mui/material";
+import placeholder from "../images/placeholder-square.jpg";
 
 // Context
 import { Context } from "../context";
@@ -31,7 +32,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function RecipeCard({ recipe }) {
-  const [cookies, setCookie] = useCookies("userId");
+  const [cookies, _setCookie] = useCookies("userId");
   const [user, setUser] = useContext(Context);
   const [favoriteColor, setFavoriteColor] = useState("primary");
 
@@ -41,24 +42,46 @@ export default function RecipeCard({ recipe }) {
     setExpanded(!expanded);
   };
 
+  const checkCustom = () => {
+    if (recipe.sourceName.includes(user.firstName + " " + user.lastName)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const favoriteRecipe = async () => {
-    const source = "spoonacular";
-    const userId = cookies.userId;
-    console.log(userId);
-    const result = await API.favoriteRecipe(recipe, source, userId);
-    const favoriteRecipes = [...result.data.recipes];
-    setUser({ ...user, recipes: favoriteRecipes });
-    setFavoriteColor("primary.favorite");
+    const alreadyFavorite = checkFavorites();
+    if (!alreadyFavorite) {
+      const custom = checkCustom();
+
+      const source = custom ? "custom" : "spoonacular";
+      const userId = cookies.userId;
+
+      const result = await API.favoriteRecipe(recipe, source, userId);
+      const favoriteRecipes = [...result.data.favorites];
+      setUser({ ...user, favorites: favoriteRecipes });
+      setFavoriteColor("primary.favorite");
+    } else {
+      // remove favorite
+    }
   };
 
   const checkFavorites = () => {
-    if (user.recipes.findIndex((item) => item.recipe.id == recipe.id) !== -1) {
-      setFavoriteColor("primary.favorite");
+    if (
+      user.favorites.findIndex((item) => item.recipe.id === recipe.id) !== -1
+    ) {
+      return true;
+    } else {
+      return false;
     }
   };
 
   useEffect(() => {
-    checkFavorites();
+    const favorite = checkFavorites();
+    if (favorite) {
+      setFavoriteColor("primary.favorite");
+    }
   }, []);
 
   return (
@@ -84,7 +107,7 @@ export default function RecipeCard({ recipe }) {
       <CardMedia
         component="img"
         height="194"
-        image={recipe.image}
+        image={recipe.image ? recipe.image : placeholder}
         alt={recipe.title + " image"}
       />
       <CardContent>
@@ -116,13 +139,7 @@ export default function RecipeCard({ recipe }) {
             return (
               <ListItem disablePadding key={index}>
                 <ListItemText
-                  primary={
-                    item.measures.metric.amount +
-                    " " +
-                    item.measures.metric.unitShort +
-                    " " +
-                    item.name
-                  }
+                  primary={item.amount + " " + item.unit + " " + item.name}
                 />
               </ListItem>
             );
