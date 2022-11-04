@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback } from "react";
+import React, { useContext, useEffect, useCallback, useState } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { API } from "./API";
@@ -27,6 +27,7 @@ import ListView from "./views/ListView";
 import FavoritesView from "./views/FavoritesView";
 import Footer from "./components/Footer";
 import MyRecipes from "./views/MyRecipes";
+import Spinner from "./components/Spinner";
 
 const theme = createTheme({
   palette: {
@@ -55,27 +56,37 @@ const darkTheme = createTheme({
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies("userId");
   const [user, setUser] = useContext(Context);
+  const [loading, setLoading] = useState(true);
 
   const fetchUser = useCallback(async (id) => {
     const data = await API.getUserData(id);
     console.log(data);
     if (data.error) {
       removeCookie("userId");
+      localStorage.clear();
       console.log(data.message);
     } else {
       setUser(data.user);
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    if (user) return console.log("user!!!");
-    if (cookies.userId) {
-      console.log("fetching!!!");
+    if (user) return console.log("user exists");
+    const cookieUser = cookies.userId;
+    const localStorageUser = localStorage.getItem("userId");
+    if (cookieUser) {
+      console.log("fetching cookie user");
       fetchUser(cookies.userId);
+    } else if (localStorageUser) {
+      console.log("no cookie");
+      console.log("fetching local storage user");
+      fetchUser(localStorageUser);
     } else {
       console.log("no user");
+      setLoading(false);
     }
-  }, [cookies]);
+  }, []);
 
   return (
     <Router>
@@ -94,7 +105,10 @@ function App() {
             <Route path="/lists/:listId" element={<ListView />} />
             <Route path="/favorites" element={<FavoritesView />} />
             <Route path="/myrecipes" element={<MyRecipes />} />
-            <Route path="/" element={user ? <Home /> : <Welcome />} />
+            <Route
+              path="/"
+              element={loading ? <Spinner /> : user ? <Home /> : <Welcome />}
+            />
           </Routes>
           <Footer />
         </MenuDrawer>

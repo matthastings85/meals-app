@@ -34,8 +34,9 @@ export default function AccountPopover({}) {
 
   const logoutUser = () => {
     handleClose();
-    removeCookie("userId");
     setUser(null);
+    removeCookie("userId");
+    localStorage.clear();
     navigate("/");
   };
 

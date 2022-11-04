@@ -46,7 +46,7 @@ const CreateMealPlan = ({ setCreating }) => {
     }
 
     // Save Meal Plan to user in database
-    const userId = cookies.userId;
+    const userId = user.userId;
 
     console.log(userId);
 

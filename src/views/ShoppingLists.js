@@ -21,7 +21,7 @@ const ShoppingLists = () => {
   const handleCreateList = async (e) => {
     const list = createList(plansArray[e.target.id]);
     const mealPlanId = plansArray[e.target.id]._id;
-    const userId = cookies.userId;
+    const userId = user.userId;
 
     console.log("list:", list, mealPlanId, userId);
 

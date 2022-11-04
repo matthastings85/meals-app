@@ -80,6 +80,7 @@ export default function SignUp() {
       console.log("result: ", result);
       setUser(result.data);
       setCookie("userId", result.data.userId, { path: "/" });
+      localStorage.setItem("userId", result.data.userId);
       navigate("/");
     }
   };

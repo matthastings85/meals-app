@@ -42,10 +42,6 @@ const MealPlan = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(mealPlanId, mealPlan);
-  }, [mealPlan]);
-
   return (
     <Container component="main" maxWidth="100%">
       <Box

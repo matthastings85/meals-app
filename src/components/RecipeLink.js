@@ -33,7 +33,7 @@ const RecipeLink = () => {
     }
 
     const newRecipe = { recipeName, recipeLink };
-    const userId = cookies.userId;
+    const userId = user.userId;
 
     console.log(newRecipe, userId);
 

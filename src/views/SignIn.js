@@ -44,6 +44,9 @@ export default function SignIn() {
       console.log("result: ", result);
       setUser(result.data);
       setCookie("userId", result.data.userId, { path: "/" });
+      if (rememberMe) {
+        localStorage.setItem("userId", result.data.userId);
+      }
       navigate("/");
     }
   };
@@ -53,7 +56,9 @@ export default function SignIn() {
   };
 
   useEffect(() => {
-    if (cookies.userId) return navigate("/");
+    const cookieUser = cookies.userId;
+    const localStorageUser = localStorage.getItem("userId");
+    if (cookieUser || localStorageUser) return navigate("/");
   }, []);
 
   return (

@@ -12,6 +12,7 @@ const LogoutButton = () => {
   const logoutUser = () => {
     setUser(null);
     removeCookie("userId");
+    localStorage.clear();
   };
 
   return (

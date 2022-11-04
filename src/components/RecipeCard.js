@@ -56,7 +56,7 @@ export default function RecipeCard({ recipe }) {
       const custom = checkCustom();
 
       const source = custom ? "custom" : "spoonacular";
-      const userId = cookies.userId;
+      const userId = user.userId;
 
       const result = await API.favoriteRecipe(recipe, source, userId);
       const favoriteRecipes = [...result.data.favorites];
