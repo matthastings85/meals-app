@@ -85,6 +85,11 @@ export const API = {
 
     return await await API.postMethod({ recipe, source, userId }, url);
   },
+  removeFavorite: async (favoriteId, userId) => {
+    const url = baseUrl + `/api/favoriterecipe/delete/${favoriteId}&${userId}`;
+
+    return await await API.deleteMethod(url);
+  },
   postMethod: async (postObj, url) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");

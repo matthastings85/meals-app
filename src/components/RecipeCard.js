@@ -35,6 +35,7 @@ export default function RecipeCard({ recipe }) {
   const [cookies, _setCookie] = useCookies("userId");
   const [user, setUser] = useContext(Context);
   const [favoriteColor, setFavoriteColor] = useState("primary");
+  const [favoriteId, setFavoriteId] = useState(null);
 
   const [expanded, setExpanded] = useState(false);
 
@@ -52,11 +53,12 @@ export default function RecipeCard({ recipe }) {
 
   const favoriteRecipe = async () => {
     const alreadyFavorite = checkFavorites();
+    const userId = user.userId;
+
     if (!alreadyFavorite) {
       const custom = checkCustom();
 
       const source = custom ? "custom" : "spoonacular";
-      const userId = user.userId;
 
       const result = await API.favoriteRecipe(recipe, source, userId);
       const favoriteRecipes = [...result.data.favorites];
@@ -64,6 +66,11 @@ export default function RecipeCard({ recipe }) {
       setFavoriteColor("primary.favorite");
     } else {
       // remove favorite
+      const result = await API.removeFavorite(favoriteId, userId);
+      console.log(result);
+      const favoriteRecipes = [...result.data.user.favorites];
+      setUser({ ...user, favorites: favoriteRecipes });
+      setFavoriteColor("primary");
     }
   };
 
@@ -71,6 +78,10 @@ export default function RecipeCard({ recipe }) {
     if (
       user.favorites.findIndex((item) => item.recipe.id === recipe.id) !== -1
     ) {
+      const index = user.favorites.findIndex(
+        (item) => item.recipe.id === recipe.id
+      );
+      setFavoriteId(user.favorites[index]._id);
       return true;
     } else {
       return false;

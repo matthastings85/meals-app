@@ -44,9 +44,9 @@ const Recipes = () => {
           }}
         >
           <HomeNavCard
-            to="addrecipe"
-            title="Add Recipe"
-            icon={<CreateRounded sx={{ fontSize: 80 }} />}
+            to="myrecipes"
+            title="My Recipes"
+            icon={<MenuBookRounded sx={{ fontSize: 80 }} />}
           />
           <HomeNavCard
             to="explorerecipes"
@@ -54,9 +54,9 @@ const Recipes = () => {
             icon={<SearchRounded sx={{ fontSize: 80 }} />}
           />
           <HomeNavCard
-            to="myrecipes"
-            title="My Recipes"
-            icon={<MenuBookRounded sx={{ fontSize: 80 }} />}
+            to="addrecipe"
+            title="Add Recipe"
+            icon={<CreateRounded sx={{ fontSize: 80 }} />}
           />
         </Box>
       </Box>
