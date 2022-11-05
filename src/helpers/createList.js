@@ -1,3 +1,5 @@
+import { API } from "../API";
+
 const isolateRecipes = (plan) => {
   const recipes = [];
   for (let day of plan) {
@@ -69,4 +71,24 @@ const createList = (mealPlan) => {
   return consolidatedIngredients;
 };
 
-export default createList;
+export const checkForList = (item, listArray) => {
+  const index = listArray.findIndex(
+    (element) => element.mealPlanId === item._id
+  );
+  if (index !== -1) return listArray[index];
+  return null;
+};
+
+const handleCreateList = async (e, plansArray, user, setUser) => {
+  const list = createList(plansArray[e.target.id]);
+  const mealPlanId = plansArray[e.target.id]._id;
+  const userId = user.userId;
+
+  console.log("list:", list, mealPlanId, userId);
+
+  const result = await API.newList(list, userId, mealPlanId);
+  console.log(result);
+  setUser(result.data.user);
+};
+
+export default handleCreateList;

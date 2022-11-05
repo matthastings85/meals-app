@@ -6,7 +6,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -17,16 +16,13 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import {
-  AccountCircle,
   CalendarMonthRounded,
   Favorite,
   FoodBankRounded,
   ListRounded,
-  MenuBook,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { Button, Link } from "@mui/material";
-import BasicPopover from "./BasicPopover";
+import { Button, Typography } from "@mui/material";
 import AccountPopover from "./AccountPopover";
 import Image from "mui-image";
 import Logo from "../images/meals-app-logo-white.png";
@@ -140,16 +136,17 @@ const MenuDrawer = ({ children }) => {
               gap: "20px",
             }}
           >
-            {navMenu.map((item) => (
-              <Button
-                key={item.name}
-                onClick={() => navigate(`/${item.nav}`)}
-                sx={{ my: 2, color: "white" }}
-                startIcon={item.icon}
-              >
-                {item.name}
-              </Button>
-            ))}
+            {user &&
+              navMenu.map((item) => (
+                <Button
+                  key={item.name}
+                  onClick={() => navigate(`/${item.nav}`)}
+                  sx={{ my: 2, color: "white" }}
+                  startIcon={item.icon}
+                >
+                  {item.name}
+                </Button>
+              ))}
           </Box>
           <Box
             sx={{
@@ -158,7 +155,7 @@ const MenuDrawer = ({ children }) => {
               justifyContent: "flex-end",
             }}
           >
-            <AccountPopover />
+            {user && <AccountPopover />}
           </Box>
           {/* Mobile Menu */}
           <IconButton
@@ -211,9 +208,10 @@ const MenuDrawer = ({ children }) => {
               sx={{
                 display: { xs: "flex", md: "none" },
                 justifyContent: "flex-end",
+                minWidth: "40px",
               }}
             >
-              <AccountPopover />
+              {user && <AccountPopover />}
             </Box>
           </Box>
         </Toolbar>
@@ -225,8 +223,6 @@ const MenuDrawer = ({ children }) => {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
-
-            color: "primary.main",
           },
         }}
         anchor="left"
@@ -242,23 +238,45 @@ const MenuDrawer = ({ children }) => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List>
-          {navMenu.map((item, index) => (
-            <ListItem key={item.nav} disablePadding>
-              <ListItemButton
-                onClick={() => {
-                  handleDrawerClose();
-                  navigate(`/${item.nav}`);
-                }}
-              >
-                <ListItemIcon sx={{ color: "primary.main" }}>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.name} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        {user ? (
+          <List>
+            {navMenu.map((item, index) => (
+              <ListItem key={item.nav} disablePadding>
+                <ListItemButton
+                  onClick={() => {
+                    handleDrawerClose();
+                    navigate(`/${item.nav}`);
+                  }}
+                >
+                  <ListItemIcon sx={{ color: "primary.main" }}>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          <Box sx={{ m: 1, textAlign: "center" }}>
+            <Typography>Ready to get planning?</Typography>
+            <Button
+              onClick={() => {
+                handleDrawerClose();
+                navigate("/signin");
+              }}
+            >
+              Login
+            </Button>
+            <Button
+              onClick={() => {
+                handleDrawerClose();
+                navigate("/signup");
+              }}
+            >
+              Sign Up
+            </Button>
+          </Box>
+        )}
       </Drawer>
       <Main open={open}>
         <DrawerHeader />

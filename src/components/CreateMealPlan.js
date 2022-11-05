@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useCookies } from "react-cookie";
 
-import { Alert, Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Grid, TextField } from "@mui/material";
 import { API } from "../API";
 
 // Context
@@ -9,7 +9,6 @@ import { Context } from "../context";
 import { useNavigate } from "react-router-dom";
 
 const CreateMealPlan = ({ setCreating }) => {
-  const [cookies, setCookie] = useCookies("userId");
   const [user, setUser] = useContext(Context);
   const navigate = useNavigate();
 

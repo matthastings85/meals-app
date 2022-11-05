@@ -3,7 +3,12 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { API } from "./API";
 
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import {
+  Container,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+} from "@mui/material";
 import { brown, deepOrange, lightBlue, pink } from "@mui/material/colors";
 
 // Views
@@ -17,16 +22,17 @@ import Welcome from "./views/Welcome";
 import Recipe from "./views/Recipe";
 import MealPlan from "./views/MealPlan";
 import ShoppingLists from "./views/ShoppingLists";
+import Account from "./views/Account";
+import MyRecipes from "./views/MyRecipes";
+import FavoritesView from "./views/FavoritesView";
+import ListView from "./views/ListView";
 
 // Context
 import { Context } from "./context";
 
 // Components
 import MenuDrawer from "./components/MenuDrawer";
-import ListView from "./views/ListView";
-import FavoritesView from "./views/FavoritesView";
 import Footer from "./components/Footer";
-import MyRecipes from "./views/MyRecipes";
 import Spinner from "./components/Spinner";
 
 const theme = createTheme({
@@ -93,23 +99,26 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <MenuDrawer>
-          <Routes>
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/addrecipe" element={<AddRecipe />} />
-            <Route path="/recipes" element={<Recipes />} />
-            <Route path="/recipes/:recipeId" element={<Recipe />} />
-            <Route path="/mealplans" element={<MealPlans />} />
-            <Route path="/mealplans/:mealPlanId" element={<MealPlan />} />
-            <Route path="/lists" element={<ShoppingLists />} />
-            <Route path="/lists/:listId" element={<ListView />} />
-            <Route path="/favorites" element={<FavoritesView />} />
-            <Route path="/myrecipes" element={<MyRecipes />} />
-            <Route
-              path="/"
-              element={loading ? <Spinner /> : user ? <Home /> : <Welcome />}
-            />
-          </Routes>
+          <Container sx={{ minHeight: "calc(100vh - 220px)" }}>
+            <Routes>
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/addrecipe" element={<AddRecipe />} />
+              <Route path="/recipes" element={<Recipes />} />
+              <Route path="/recipes/:recipeId" element={<Recipe />} />
+              <Route path="/mealplans" element={<MealPlans />} />
+              <Route path="/mealplans/:mealPlanId" element={<MealPlan />} />
+              <Route path="/lists" element={<ShoppingLists />} />
+              <Route path="/lists/:listId" element={<ListView />} />
+              <Route path="/favorites" element={<FavoritesView />} />
+              <Route path="/myrecipes" element={<MyRecipes />} />
+              <Route
+                path="/"
+                element={loading ? <Spinner /> : user ? <Home /> : <Welcome />}
+              />
+            </Routes>
+          </Container>
           <Footer />
         </MenuDrawer>
       </ThemeProvider>

@@ -173,8 +173,16 @@ export const API = {
   updateList: async (acquiredList, listList, listId) => {
     const url = baseUrl + "/api/updatelist/put";
 
-    console.log(acquiredList, listList, listId);
-
     return await await API.putMethod({ acquiredList, listList, listId }, url);
+  },
+  unsubscribe: async (userId) => {
+    const url = baseUrl + "/api/unsubscribe/put";
+
+    return await await API.putMethod({ userId }, url);
+  },
+  subscribe: async (userId) => {
+    const url = baseUrl + "/api/subscribe/put";
+
+    return await await API.putMethod({ userId }, url);
   },
 };

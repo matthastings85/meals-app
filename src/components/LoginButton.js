@@ -12,7 +12,7 @@ const LoginButton = () => {
       onClick={() => navigate("/signin")}
       endIcon={<Login />}
     >
-      Log In
+      Login
     </Button>
   );
 };

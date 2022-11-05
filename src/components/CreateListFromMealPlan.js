@@ -1,21 +1,15 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { checkForList } from "../helpers/createList";
 
 const CreateListFromMealPlan = ({ array, callback, listArray }) => {
   const navigate = useNavigate();
-  const checkForList = (item) => {
-    const index = listArray.findIndex(
-      (element) => element.mealPlanId === item._id
-    );
-    if (index !== -1) return listArray[index];
-    return null;
-  };
 
   return (
     <>
       {array.map((item, index) => {
-        const list = checkForList(item);
+        const list = checkForList(item, listArray);
 
         return (
           <Box

@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { API } from "../API";
-import { useCookies } from "react-cookie";
 import { RestaurantMenu } from "@mui/icons-material";
 import { Box, Chip, List, ListItem, ListItemText } from "@mui/material";
 import placeholder from "../images/placeholder-square.jpg";
@@ -32,7 +31,6 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function RecipeCard({ recipe }) {
-  const [cookies, _setCookie] = useCookies("userId");
   const [user, setUser] = useContext(Context);
   const [favoriteColor, setFavoriteColor] = useState("primary");
   const [favoriteId, setFavoriteId] = useState(null);

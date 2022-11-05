@@ -1,26 +1,17 @@
 import React, { useContext, useState } from "react";
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Container, Typography } from "@mui/material";
 import NavBtn from "../components/NavBtn";
 import { Create, FoodBankOutlined } from "@mui/icons-material";
 import CreateMealPlan from "../components/CreateMealPlan";
 
 // Context
 import { Context } from "../context";
-import { useNavigate } from "react-router-dom";
 import useGetMealPlans from "../hooks/useGetMealPlans";
 import Spinner from "../components/Spinner";
 import MealPlanOverviewCard from "../components/MealPlanOverviewCard";
 
 const MealPlans = () => {
   const [user, _setUser] = useContext(Context);
-  const navigate = useNavigate();
   const [creating, setCreating] = useState(false);
 
   const mealPlansArray = user ? user.mealPlans : [];
@@ -31,7 +22,7 @@ const MealPlans = () => {
   };
 
   return (
-    <Container component="main" maxWidth="100%">
+    <Container component="main" maxWidth="xs">
       <Box
         sx={{
           marginTop: 2,
@@ -73,8 +64,14 @@ const MealPlans = () => {
                   gap: "10px",
                   width: 1,
                   maxWidth: "sm",
+                  mt: 2,
                 }}
               >
+                {plansArray.length === 0 && (
+                  <Typography>
+                    Create your first meal plan to get started.
+                  </Typography>
+                )}
                 {plansArray.length > 0 &&
                   plansArray.map((plan, index) => {
                     return <MealPlanOverviewCard key={index} plan={plan} />;

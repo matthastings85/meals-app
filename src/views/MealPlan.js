@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 
 // Utilities
 import { useParams } from "react-router-dom";
 import { API } from "../API";
+import handleCreateList from "../helpers/createList";
 
 // Components
 import { Alert, Avatar, Button, Typography } from "@mui/material";
@@ -11,6 +12,13 @@ import { Box, Container } from "@mui/system";
 import { FoodBankOutlined } from "@mui/icons-material";
 import RecipeCard from "../components/RecipeCard";
 
+// Context
+import { Context } from "../context";
+
+// Hooks
+import useGetMealPlans from "../hooks/useGetMealPlans";
+import useGetLists from "../hooks/useGetLists";
+
 const MealPlan = () => {
   const { mealPlanId } = useParams();
   const [mealPlan, setMealPlan] = useState(null);
@@ -18,6 +26,13 @@ const MealPlan = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [selected, setSelected] = useState(null);
+
+  // Items need to check for list and create list
+  // const [user, setUser] = useContext(Context);
+  // const mealPlansArray = user ? user.mealPlans : [];
+  // const { plansArray, loading } = useGetMealPlans(mealPlansArray);
+  // const userLists = user ? user.lists : [];
+  // const { listArray, listLoading } = useGetLists(userLists);
 
   const getMealPlan = useCallback(async (mealPlanId) => {
     const result = await API.getMealPlan(mealPlanId);
@@ -43,7 +58,7 @@ const MealPlan = () => {
   }, []);
 
   return (
-    <Container component="main" maxWidth="100%">
+    <Container component="main" maxWidth="xs">
       <Box
         sx={{
           mt: 2,
@@ -101,6 +116,21 @@ const MealPlan = () => {
               />
             );
           })}
+        {/* {list ? (
+          <Button id={index} onClick={() => navigate("/lists/" + list._id)}>
+            View List
+          </Button>
+        ) : (
+          <Button
+            onClick={(e) => {
+              handleCreateList(e);
+            }}
+            sx={{ mt: 2 }}
+            variant="contained"
+          >
+            Create list from meal plan
+          </Button>
+        )} */}
       </Box>
     </Container>
   );

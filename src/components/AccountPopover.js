@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
-import Popover from "@mui/material/Popover";
-import Typography from "@mui/material/Typography";
+
 import {
   Avatar,
   Box,
@@ -10,14 +9,14 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { AccountCircle, Logout, Settings } from "@mui/icons-material";
+import { AccountCircle, Logout } from "@mui/icons-material";
 import { Context } from "../context";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 export default function AccountPopover({}) {
-  const [user, setUser] = useContext(Context);
-  const [cookies, setCookie, removeCookie] = useCookies("userId");
+  const [_user, setUser] = useContext(Context);
+  const [_cookies, _setCookie, removeCookie] = useCookies("userId");
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -85,19 +84,14 @@ export default function AccountPopover({}) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {/* <MenuItem>
-          <Avatar /> Profile
-        </MenuItem> */}
-        <MenuItem>
+        <MenuItem
+          onClick={() => {
+            navigate("/account");
+          }}
+        >
           <Avatar /> My account
         </MenuItem>
         <Divider />
-        {/* <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem> */}
         <MenuItem onClick={logoutUser}>
           <ListItemIcon>
             <Logout fontSize="small" />

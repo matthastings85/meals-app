@@ -1,13 +1,12 @@
+import React, { useContext, useState } from "react";
 import { Favorite } from "@mui/icons-material";
 import { Avatar, Box, Button, Container, Typography } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
-import MealPlanCard from "../components/MealPlanCard";
 import RecipeCard from "../components/RecipeCard";
 import RecipePreviewCard from "../components/RecipePreviewCard";
 import { Context } from "../context";
 
 const FavoritesView = () => {
-  const [user, setUser] = useContext(Context);
+  const [user, _setUser] = useContext(Context);
   const [selected, setSelected] = useState(null);
 
   return (
@@ -36,6 +35,12 @@ const FavoritesView = () => {
           </Typography>
         </Box>
       </Box>
+      {user.favorites.length === 0 && !selected && (
+        <Typography>
+          You haven't added any favorites yet. Click the heart at the top right
+          corner of a recipe card to add it to your favorites.
+        </Typography>
+      )}
       {user &&
         !selected &&
         user.favorites.map((item, index) => {
