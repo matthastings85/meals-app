@@ -99,7 +99,7 @@ function App() {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <MenuDrawer>
-          <Container sx={{ minHeight: "calc(100vh - 220px)" }}>
+          <Container sx={{ p: 0, minHeight: "calc(100vh - 220px)" }}>
             <Routes>
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
