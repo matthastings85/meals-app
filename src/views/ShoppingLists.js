@@ -45,6 +45,7 @@ const ShoppingLists = () => {
         </Box>
         <Box sx={{ width: 1, mt: 3 }}>
           {loading && <Spinner />}
+          {listLoading && <Spinner />}
           {plansArray.length === 0 && !loading && (
             <Typography>
               You haven't created any meal plans. Lists are generated from meal

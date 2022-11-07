@@ -1,9 +1,10 @@
-import { Box, Card, CardContent, Container, Typography } from "@mui/material";
-import Image from "mui-image";
 import React from "react";
 
+// components
+import { Box, Card, CardContent, Container, Typography } from "@mui/material";
 import LoginButton from "../components/LoginButton";
 import SignUpButton from "../components/SignUpButton";
+import Image from "mui-image";
 import Logo from "../images/meals-app-logo-white.png";
 
 const Welcome = () => {

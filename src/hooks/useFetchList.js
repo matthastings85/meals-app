@@ -6,6 +6,7 @@ const useFetchList = (listId) => {
   const [error, setError] = useState(false);
   const [list, setList] = useState(null);
   const [acquired, setAcquired] = useState(null);
+  const [mealPlanId, setMealPlanId] = useState(null);
 
   const fetchList = async (listId) => {
     const result = await API.getList(listId);
@@ -13,13 +14,14 @@ const useFetchList = (listId) => {
     setList(result.list);
     setAcquired(result.acquired);
     setLoading(false);
+    setMealPlanId(result.mealPlanId);
   };
 
   useEffect(() => {
     fetchList(listId);
   }, [listId]);
 
-  return { list, loading, error, setList, acquired, setAcquired };
+  return { list, loading, error, setList, acquired, setAcquired, mealPlanId };
 };
 
 export default useFetchList;

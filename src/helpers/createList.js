@@ -62,7 +62,7 @@ const consolidateIngredients = (list) => {
   return newList;
 };
 
-const createList = (mealPlan) => {
+export const createList = (mealPlan) => {
   const recipes = isolateRecipes(mealPlan.plan);
   const ingredients = isolateIngredients(recipes);
   const parsedIngredients = parseIngredients(ingredients);

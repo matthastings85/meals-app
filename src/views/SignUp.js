@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Copyright from "../components/Copyright";
 import { Alert } from "@mui/material";
 import { useCookies } from "react-cookie";
 
@@ -37,6 +36,8 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Form data
     const data = new FormData(event.currentTarget);
     const firstName = data.get("firstName");
     const lastName = data.get("lastName");
@@ -44,6 +45,7 @@ export default function SignUp() {
     const password = data.get("password");
     // const hashedPassword = bcrypt.hashSync(password, salt);
 
+    // Check for errors
     if (firstName === "") {
       setResponseError(true);
       return setErrorMessage("First Name is Required");
@@ -61,6 +63,7 @@ export default function SignUp() {
       return setErrorMessage("Password is Required");
     }
 
+    // New User Object
     const newUser = {
       firstName,
       lastName,
@@ -70,8 +73,11 @@ export default function SignUp() {
     };
     console.log(newUser);
 
+    // post new user to database
     const result = await API.signUpUser(newUser);
     console.log(result);
+
+    // handle response. Display error message, or save user to app context. then navigate home.
     if (result.error) {
       console.log(result);
       setResponseError(true);
@@ -85,8 +91,9 @@ export default function SignUp() {
     }
   };
 
+  // check if a user is already logged in and redirect home.
   useEffect(() => {
-    if (cookies.userId) return navigate("/");
+    if (user) return navigate("/");
   }, []);
 
   return (

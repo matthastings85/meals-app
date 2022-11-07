@@ -3,14 +3,6 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { API } from "./API";
 
-import {
-  Container,
-  createTheme,
-  CssBaseline,
-  ThemeProvider,
-} from "@mui/material";
-import { brown, deepOrange, lightBlue, pink } from "@mui/material/colors";
-
 // Views
 import SignIn from "./views/SignIn";
 import SignUp from "./views/SignUp";
@@ -34,6 +26,15 @@ import { Context } from "./context";
 import MenuDrawer from "./components/MenuDrawer";
 import Footer from "./components/Footer";
 import Spinner from "./components/Spinner";
+import {
+  Container,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+} from "@mui/material";
+
+// Colors
+import { brown, deepOrange, lightBlue, pink } from "@mui/material/colors";
 
 const theme = createTheme({
   palette: {
@@ -60,7 +61,7 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const [cookies, setCookie, removeCookie] = useCookies("userId");
+  const [cookies, _setCookie, removeCookie] = useCookies("userId");
   const [user, setUser] = useContext(Context);
   const [loading, setLoading] = useState(true);
 
@@ -77,6 +78,7 @@ function App() {
     }
   }, []);
 
+  // Check to see if a cookie is present or the userId is stored in local storage, and automatically fetch the user from the database.
   useEffect(() => {
     if (user) return console.log("user exists");
     const cookieUser = cookies.userId;

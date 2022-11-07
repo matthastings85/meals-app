@@ -5,19 +5,25 @@ import {
   AccordionSummary,
   Avatar,
   Box,
+  Button,
   Container,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { API } from "../API";
+import AddToListDialog from "../components/AddToLIstDialog";
 import ControlledCheckbox from "../components/ControlledCheckbox";
 import Spinner from "../components/Spinner";
+import { Context } from "../context";
+import { createList } from "../helpers/createList";
 import useFetchList from "../hooks/useFetchList";
 
 const ListView = () => {
+  const [user, setUser] = useContext(Context);
   const { listId } = useParams();
-  const { list, loading, error, setList, acquired, setAcquired } =
+  const navigate = useNavigate();
+  const { list, loading, error, setList, acquired, setAcquired, mealPlanId } =
     useFetchList(listId);
 
   const updateDatabase = async (acquiredList, listList) => {
@@ -26,23 +32,65 @@ const ListView = () => {
   };
 
   const handleCheck = (index, checked, itemId, setChecked) => {
-    console.log(index, checked, itemId);
     if (checked) {
-      const checkedItem = list.filter((item) => item.id === itemId);
-      const stagedList = list.filter((item) => item.id !== itemId);
-      setAcquired([...acquired, ...checkedItem]);
+      const checkedItem = list[index];
+      const stagedList = [...list];
+      stagedList.splice(index, 1);
+      setAcquired([...acquired, checkedItem]);
       setList([...stagedList]);
       setChecked(false);
-      updateDatabase([...acquired, ...checkedItem], [...stagedList]);
+      updateDatabase([...acquired, checkedItem], [...stagedList]);
     }
     if (!checked) {
-      const checkedItem = acquired.filter((item) => item.id === itemId);
-      const stagedList = acquired.filter((item) => item.id !== itemId);
-      setList([...list, ...checkedItem]);
+      const checkedItem = acquired[index];
+      const stagedList = [...acquired];
+      stagedList.splice(index, 1);
+      setList([...list, checkedItem]);
       setAcquired([...stagedList]);
       setChecked(true);
-      updateDatabase([...stagedList], [...list, ...checkedItem]);
+      updateDatabase([...stagedList], [...list, checkedItem]);
     }
+  };
+
+  const addToList = (name) => {
+    console.log(name);
+    const newItem = {
+      name,
+      amount: "",
+      unit: "",
+      id: "",
+      recipeTitle: "manually added",
+    };
+    updateDatabase(acquired, [newItem, ...list]);
+    setList([newItem, ...list]);
+  };
+
+  const refreshList = async () => {
+    const mealPlan = await API.getMealPlan(mealPlanId);
+    const createdList = createList(mealPlan);
+
+    const newAcquired = [];
+    const newList = [];
+
+    createdList.map((item) => {
+      if (acquired.findIndex((a) => a.name === item.name) !== -1) {
+        newAcquired.push(item);
+      } else {
+        newList.push(item);
+      }
+    });
+    const manualAndAquired = acquired.filter(
+      (item) => item.recipeTitle === "manually added"
+    );
+    const manualItems = list.filter(
+      (item) => item.recipeTitle === "manually added"
+    );
+
+    newAcquired.push(...manualAndAquired);
+    newList.push(...manualItems);
+    updateDatabase(newAcquired, newList);
+    setAcquired(newAcquired);
+    setList(newList);
   };
 
   return (
@@ -69,6 +117,13 @@ const ListView = () => {
           <Typography component="h1" variant="h4">
             Shopping List
           </Typography>
+        </Box>
+        <Box>
+          <AddToListDialog addToList={addToList} />
+          <Button onClick={refreshList}>refresh list</Button>
+          <Button onClick={() => navigate(`/mealplans/${mealPlanId}`)}>
+            go to meal plan
+          </Button>
         </Box>
       </Box>
       {loading ? (
