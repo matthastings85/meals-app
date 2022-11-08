@@ -23,15 +23,23 @@ const ListView = () => {
   const [user, setUser] = useContext(Context);
   const { listId } = useParams();
   const navigate = useNavigate();
-  const { list, loading, error, setList, acquired, setAcquired, mealPlanId } =
-    useFetchList(listId);
+  const {
+    list,
+    loading,
+    error,
+    setList,
+    acquired,
+    setAcquired,
+    mealPlanId,
+    mealPlan,
+  } = useFetchList(listId);
 
   const updateDatabase = async (acquiredList, listList) => {
     const result = await API.updateList(acquiredList, listList, listId);
     console.log(result);
   };
 
-  const handleCheck = (index, checked, itemId, setChecked) => {
+  const handleCheck = (index, checked, setChecked) => {
     if (checked) {
       const checkedItem = list[index];
       const stagedList = [...list];
@@ -53,7 +61,6 @@ const ListView = () => {
   };
 
   const addToList = (name) => {
-    console.log(name);
     const newItem = {
       name,
       amount: "",
@@ -66,7 +73,6 @@ const ListView = () => {
   };
 
   const refreshList = async () => {
-    const mealPlan = await API.getMealPlan(mealPlanId);
     const createdList = createList(mealPlan);
 
     const newAcquired = [];
@@ -118,6 +124,9 @@ const ListView = () => {
             Shopping List
           </Typography>
         </Box>
+        {mealPlan && (
+          <Typography>For Meal Plan Starting: {mealPlan.startDate}</Typography>
+        )}
         <Box>
           <AddToListDialog addToList={addToList} />
           <Button onClick={refreshList}>refresh list</Button>

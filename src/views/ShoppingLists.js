@@ -16,7 +16,8 @@ const ShoppingLists = () => {
   const { listArray, listLoading } = useGetLists(userLists);
 
   const callback = (e) => {
-    handleCreateList(e, plansArray, user, setUser);
+    const index = e.target.id;
+    handleCreateList(index, plansArray, user, setUser);
   };
 
   return (

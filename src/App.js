@@ -35,6 +35,7 @@ import {
 
 // Colors
 import { brown, deepOrange, lightBlue, pink } from "@mui/material/colors";
+import ExploreRecipes from "./views/ExploreRecipes";
 
 const theme = createTheme({
   palette: {
@@ -115,6 +116,7 @@ function App() {
               <Route path="/lists/:listId" element={<ListView />} />
               <Route path="/favorites" element={<FavoritesView />} />
               <Route path="/myrecipes" element={<MyRecipes />} />
+              <Route path="/explorerecipes" element={<ExploreRecipes />} />
               <Route
                 path="/"
                 element={loading ? <Spinner /> : user ? <Home /> : <Welcome />}

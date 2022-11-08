@@ -50,7 +50,7 @@ const Recipes = () => {
           />
           <HomeNavCard
             to="explorerecipes"
-            title="Explore API"
+            title="Explore Recipes"
             icon={<SearchRounded sx={{ fontSize: 80 }} />}
           />
           <HomeNavCard

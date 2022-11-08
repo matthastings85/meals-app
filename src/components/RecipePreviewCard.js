@@ -56,6 +56,7 @@ const RecipePreviewCard = ({
               onClick={() => {
                 setSelected(item);
               }}
+              size="small"
             >
               View Recipe
             </Button>
@@ -70,7 +71,7 @@ const RecipePreviewCard = ({
             </Button>
           )}
           {enableRemove && (
-            <Button onClick={callback}>
+            <Button size="small" onClick={callback}>
               <RemoveCircleOutline />
             </Button>
           )}

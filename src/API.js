@@ -1,5 +1,5 @@
-// const baseUrl = "https://meals-app-backend.vercel.app";
-const baseUrl = "http://localhost:8000";
+const baseUrl = "https://meals-app-backend.vercel.app";
+// const baseUrl = "http://localhost:8000";
 
 export const API = {
   getUserData: async (id) => {

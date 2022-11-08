@@ -79,9 +79,9 @@ export const checkForList = (item, listArray) => {
   return null;
 };
 
-const handleCreateList = async (e, plansArray, user, setUser) => {
-  const list = createList(plansArray[e.target.id]);
-  const mealPlanId = plansArray[e.target.id]._id;
+const handleCreateList = async (index, plansArray, user, setUser) => {
+  const list = createList(plansArray[index]);
+  const mealPlanId = plansArray[index]._id;
   const userId = user.userId;
 
   console.log("list:", list, mealPlanId, userId);

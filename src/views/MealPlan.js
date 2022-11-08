@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 
 // Utilities
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { API } from "../API";
 import handleCreateList from "../helpers/createList";
 
@@ -18,21 +18,26 @@ import { Context } from "../context";
 // Hooks
 import useGetMealPlans from "../hooks/useGetMealPlans";
 import useGetLists from "../hooks/useGetLists";
+import Spinner from "../components/Spinner";
+import { LoadingButton } from "@mui/lab";
 
 const MealPlan = () => {
+  const navigate = useNavigate();
   const { mealPlanId } = useParams();
   const [mealPlan, setMealPlan] = useState(null);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [selected, setSelected] = useState(null);
+  const [list, setList] = useState(null);
+  const [planIndex, setPlanIndex] = useState(null);
 
   // Items need to check for list and create list
-  // const [user, setUser] = useContext(Context);
-  // const mealPlansArray = user ? user.mealPlans : [];
-  // const { plansArray, loading } = useGetMealPlans(mealPlansArray);
-  // const userLists = user ? user.lists : [];
-  // const { listArray, listLoading } = useGetLists(userLists);
+  const [user, setUser] = useContext(Context);
+  const mealPlansArray = user ? user.mealPlans : [];
+  const { plansArray, loading } = useGetMealPlans(mealPlansArray);
+  const userLists = user ? user.lists : [];
+  const { listArray, listLoading } = useGetLists(userLists);
 
   const getMealPlan = useCallback(async (mealPlanId) => {
     const result = await API.getMealPlan(mealPlanId);
@@ -51,11 +56,31 @@ const MealPlan = () => {
     );
   });
 
+  const findList = (array, id) => {
+    const targetList = array.filter((item) => item.mealPlanId === id);
+    console.log(targetList);
+    setList(targetList[0]);
+  };
+
+  const findIndex = (array, id) => {
+    const index = array.findIndex((item) => item._id === id);
+    console.log("index: ", index);
+    setPlanIndex(index);
+  };
+
   useEffect(() => {
     if (!mealPlan) {
       getMealPlan(mealPlanId);
     }
   }, []);
+
+  useEffect(() => {
+    if (listArray.length > 0) findList(listArray, mealPlanId);
+  }, [listArray]);
+
+  useEffect(() => {
+    if (plansArray.length > 0) findIndex(plansArray, mealPlanId);
+  }, [plansArray]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -89,6 +114,27 @@ const MealPlan = () => {
             Meal Plan for {startDate}
           </Typography>
         )}
+
+        {list ? (
+          <LoadingButton
+            onClick={() => navigate("/lists/" + list._id)}
+            loading={listLoading}
+            sx={{ mt: 2 }}
+          >
+            View List
+          </LoadingButton>
+        ) : (
+          <LoadingButton
+            onClick={() => {
+              handleCreateList(planIndex, plansArray, user, setUser);
+            }}
+            sx={{ mt: 2 }}
+            loading={listLoading}
+          >
+            Create list
+          </LoadingButton>
+        )}
+
         {selected && (
           <>
             <Button
@@ -116,21 +162,6 @@ const MealPlan = () => {
               />
             );
           })}
-        {/* {list ? (
-          <Button id={index} onClick={() => navigate("/lists/" + list._id)}>
-            View List
-          </Button>
-        ) : (
-          <Button
-            onClick={(e) => {
-              handleCreateList(e);
-            }}
-            sx={{ mt: 2 }}
-            variant="contained"
-          >
-            Create list from meal plan
-          </Button>
-        )} */}
       </Box>
     </Container>
   );
