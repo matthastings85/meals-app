@@ -98,11 +98,12 @@ export const FOODAPI = {
       .json()
       .catch((err) => console.error(err));
   },
-  getRandom: async () => {
+  getRandom: async (tags) => {
+    console.log(tags);
     const options = {
       method: "GET",
       url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random",
-      params: { number: "10" },
+      params: { tags: "dinner", number: "10" },
       headers: {
         "X-RapidAPI-Key": process.env.REACT_APP_SPOONACULAR_KEY,
         "X-RapidAPI-Host":
@@ -112,6 +113,32 @@ export const FOODAPI = {
 
     let results;
 
+    await axios
+      .request(options)
+      .then(function (response) {
+        console.log(response.data);
+        results = response.data;
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+    return results;
+  },
+  extractRecipe: async (url) => {
+    const options = {
+      method: "GET",
+      url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/extract",
+      params: {
+        url: url,
+      },
+      headers: {
+        "X-RapidAPI-Key": process.env.REACT_APP_SPOONACULAR_KEY,
+        "X-RapidAPI-Host":
+          "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+      },
+    };
+
+    let results;
     await axios
       .request(options)
       .then(function (response) {

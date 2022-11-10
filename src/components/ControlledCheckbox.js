@@ -15,13 +15,12 @@ export default function ControlledCheckbox({
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
-    callback(index, event.target.checked, content.id, setChecked);
+    callback(index, event.target.checked, setChecked);
   };
 
   return (
     <Box
       sx={{
-        width: 1,
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
@@ -33,7 +32,7 @@ export default function ControlledCheckbox({
         inputProps={{ "aria-label": "controlled" }}
       />
       <Typography>{label}</Typography>
-      <BasicPopover content={content} />
+      {content && <BasicPopover content={content} />}
     </Box>
   );
 }

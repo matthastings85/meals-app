@@ -20,6 +20,7 @@ const CreateMealPlan = ({ setCreating }) => {
     const data = new FormData(event.currentTarget);
     const startDate = data.get("startDate");
     const length = parseInt(data.get("length"));
+    const archived = false;
 
     // Check for form errors
     if (startDate === "") {
@@ -49,7 +50,10 @@ const CreateMealPlan = ({ setCreating }) => {
 
     console.log(userId);
 
-    const result = await API.newMealPlan({ startDate, length, plan }, userId);
+    const result = await API.newMealPlan(
+      { startDate, length, plan, archived },
+      userId
+    );
     console.log(result);
     setUser(result.data.user);
 

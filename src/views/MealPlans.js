@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Avatar, Box, Container, Typography } from "@mui/material";
+import { Avatar, Box, Button, Container, Typography } from "@mui/material";
 import NavBtn from "../components/NavBtn";
 import { Create, FoodBankOutlined } from "@mui/icons-material";
 import CreateMealPlan from "../components/CreateMealPlan";
@@ -13,12 +13,17 @@ import MealPlanOverviewCard from "../components/MealPlanOverviewCard";
 const MealPlans = () => {
   const [user, _setUser] = useContext(Context);
   const [creating, setCreating] = useState(false);
+  const [viewArchived, setViewArchived] = useState(false);
 
   const mealPlansArray = user ? user.mealPlans : [];
   const { plansArray, loading } = useGetMealPlans(mealPlansArray);
 
   const createPlan = () => {
     setCreating(true);
+  };
+
+  const toggleViewArchived = () => {
+    setViewArchived(!viewArchived);
   };
 
   return (
@@ -67,15 +72,32 @@ const MealPlans = () => {
                   mt: 2,
                 }}
               >
-                {plansArray.length === 0 && (
-                  <Typography>
-                    Create your first meal plan to get started.
-                  </Typography>
-                )}
                 {plansArray.length > 0 &&
                   plansArray.map((plan, index) => {
+                    if (plan.archived) return;
                     return <MealPlanOverviewCard key={index} plan={plan} />;
                   })}
+              </Box>
+            )}
+            <Button onClick={toggleViewArchived} sx={{ m: 2 }}>
+              {viewArchived ? "hide archived" : "view archived"}
+            </Button>
+            {viewArchived && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexWrap: "wrap",
+                  gap: "10px",
+                  width: 1,
+                  maxWidth: "sm",
+                  mt: 2,
+                }}
+              >
+                {plansArray.map((plan, index) => {
+                  if (!plan.archived) return;
+                  return <MealPlanOverviewCard key={index} plan={plan} />;
+                })}
               </Box>
             )}
           </>

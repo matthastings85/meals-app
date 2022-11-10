@@ -10,8 +10,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Archive, Delete, MoreVert } from "@mui/icons-material";
 import { Box } from "@mui/system";
-import { API } from "../API";
 import { Context } from "../context";
+import { API } from "../API";
 
 const MealPlanOverviewCard = ({ plan }) => {
   const [user, setUser] = useContext(Context);
@@ -39,9 +39,10 @@ const MealPlanOverviewCard = ({ plan }) => {
   };
   const { start, end } = processDates(plan.startDate, plan.length);
 
-  const handleArchive = () => {
-    console.log("archive");
-    console.log(plan._id);
+  const handleArchive = async () => {
+    console.log("archive", plan._id);
+    const result = await API.archiveMealPlan(plan._id);
+    console.log(result);
   };
 
   const handleDelete = async () => {

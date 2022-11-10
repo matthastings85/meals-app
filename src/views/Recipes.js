@@ -2,6 +2,7 @@ import React from "react";
 import {
   CreateRounded,
   FoodBankOutlined,
+  LinkRounded,
   MenuBookRounded,
   SearchRounded,
 } from "@mui/icons-material";
@@ -50,13 +51,18 @@ const Recipes = () => {
           />
           <HomeNavCard
             to="explorerecipes"
-            title="Explore Recipes"
+            title="Random"
             icon={<SearchRounded sx={{ fontSize: 80 }} />}
           />
           <HomeNavCard
             to="addrecipe"
             title="Add Recipe"
             icon={<CreateRounded sx={{ fontSize: 80 }} />}
+          />
+          <HomeNavCard
+            to="extractrecipe"
+            title="Extract"
+            icon={<LinkRounded sx={{ fontSize: 80 }} />}
           />
         </Box>
       </Box>

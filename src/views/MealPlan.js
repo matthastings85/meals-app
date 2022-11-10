@@ -41,7 +41,7 @@ const MealPlan = () => {
 
   const getMealPlan = useCallback(async (mealPlanId) => {
     const result = await API.getMealPlan(mealPlanId);
-    console.log(result);
+
     setMealPlan(result);
     setStartDate(
       new Date(result.startDate.replace(/-/g, "/")).toLocaleDateString(
@@ -58,13 +58,13 @@ const MealPlan = () => {
 
   const findList = (array, id) => {
     const targetList = array.filter((item) => item.mealPlanId === id);
-    console.log(targetList);
+
     setList(targetList[0]);
   };
 
   const findIndex = (array, id) => {
     const index = array.findIndex((item) => item._id === id);
-    console.log("index: ", index);
+
     setPlanIndex(index);
   };
 

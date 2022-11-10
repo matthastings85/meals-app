@@ -19,6 +19,7 @@ const HomeNavCard = ({ to, icon, title }) => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            textAlign: "center",
           }}
         >
           <Avatar
