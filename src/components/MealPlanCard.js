@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
+import { Button, Paper, Typography } from "@mui/material";
 import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  IconButton,
-} from "@mui/material";
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineItem,
+  TimelineSeparator,
+} from "@mui/lab";
 import { MoreVert } from "@mui/icons-material";
 
 import { Box } from "@mui/system";
@@ -23,6 +24,7 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan, setSelected }) => {
   const navigate = useNavigate();
   const [options, setOptions] = useState(false);
   const [searching, setSearching] = useState(false);
+  const [dotChecked, setDotChecked] = useState(false);
 
   const date = new Date(item.date).toLocaleDateString("en-us", {
     weekday: "short",
@@ -81,51 +83,69 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan, setSelected }) => {
     toggleOptions();
   };
 
+  const toggleDot = () => {
+    setDotChecked(!dotChecked);
+  };
+
   return (
-    <Card sx={{ width: 1, maxWidth: "sm", mt: 1 }}>
-      <CardHeader
-        action={
-          <IconButton aria-label="settings">
-            <MoreVert />
-          </IconButton>
-        }
-        subheader={date}
-      />
-      <CardContent sx={{ width: 1 }}>
-        <Box sx={{ width: 1, display: "flex", flexDirection: "column" }}>
-          {!options &&
-            !searching &&
-            item.recipe.title === "recipe goes here" && (
-              <Button onClick={toggleOptions}>Add Meal</Button>
+    <TimelineItem sx={{ width: "100%" }}>
+      <TimelineSeparator>
+        <TimelineConnector />
+        <TimelineDot
+          onClick={toggleDot}
+          color="primary"
+          variant={dotChecked ? "filled" : "outlined"}
+        />
+        <TimelineConnector />
+      </TimelineSeparator>
+      <TimelineContent sx={{ pl: 1, pr: 0 }}>
+        <Box sx={{ mb: 2 }}>
+          <Typography>{date}</Typography>
+          <Paper
+            sx={{
+              width: 1,
+              display: "flex",
+              flexDirection: "column",
+              minHeight: "70px",
+              justifyContent: "center",
+            }}
+          >
+            {!options &&
+              !searching &&
+              item.recipe.title === "recipe goes here" && (
+                <Button onClick={toggleOptions}>Add Meal</Button>
+              )}
+            {options && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                }}
+              >
+                <SearchDialog
+                  toggleSearching={toggleSearching}
+                  callback={handleSelect}
+                />
+                <AddMyRecipeDialog addRecipe={addRecipe} />
+                <AddFavoriteDialog addRecipe={addRecipe} />
+                <Button size="small" onClick={handleLeftovers}>
+                  Leftovers
+                </Button>
+              </Box>
             )}
-          {options && (
-            <Box
-              sx={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "center",
-              }}
-            >
-              <SearchDialog
-                toggleSearching={toggleSearching}
-                callback={handleSelect}
+            {item.recipe.title !== "recipe goes here" && (
+              <RecipePreviewCard
+                item={item.recipe}
+                enableRemove
+                callback={handleRemove}
+                setSelected={setSelected}
               />
-              <AddMyRecipeDialog addRecipe={addRecipe} />
-              <AddFavoriteDialog addRecipe={addRecipe} />
-              <Button onClick={handleLeftovers}>Leftovers</Button>
-            </Box>
-          )}
-          {item.recipe.title !== "recipe goes here" && (
-            <RecipePreviewCard
-              item={item.recipe}
-              enableRemove
-              callback={handleRemove}
-              setSelected={setSelected}
-            />
-          )}
+            )}
+          </Paper>
         </Box>
-      </CardContent>
-    </Card>
+      </TimelineContent>
+    </TimelineItem>
   );
 };
 

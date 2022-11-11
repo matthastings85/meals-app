@@ -9,7 +9,7 @@ import handleCreateList from "../helpers/createList";
 import { Alert, Avatar, Button, Typography } from "@mui/material";
 import MealPlanCard from "../components/MealPlanCard";
 import { Box, Container } from "@mui/system";
-import { FoodBankOutlined } from "@mui/icons-material";
+import { FastForward, FoodBankOutlined } from "@mui/icons-material";
 import RecipeCard from "../components/RecipeCard";
 
 // Context
@@ -19,18 +19,27 @@ import { Context } from "../context";
 import useGetMealPlans from "../hooks/useGetMealPlans";
 import useGetLists from "../hooks/useGetLists";
 import Spinner from "../components/Spinner";
-import { LoadingButton } from "@mui/lab";
+import {
+  LoadingButton,
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineItem,
+  timelineItemClasses,
+  TimelineOppositeContent,
+  TimelineSeparator,
+} from "@mui/lab";
+import useFetchMealPlan from "../hooks/useFetchMealPlan";
 
 const MealPlan = () => {
   const navigate = useNavigate();
   const { mealPlanId } = useParams();
-  const [mealPlan, setMealPlan] = useState(null);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [startDate, setStartDate] = useState(null);
   const [selected, setSelected] = useState(null);
   const [list, setList] = useState(null);
   const [planIndex, setPlanIndex] = useState(null);
+  const { mpLoading, error, errorMessage, mealPlan, startDate, setMealPlan } =
+    useFetchMealPlan(mealPlanId);
 
   // Items need to check for list and create list
   const [user, setUser] = useContext(Context);
@@ -38,23 +47,6 @@ const MealPlan = () => {
   const { plansArray, loading } = useGetMealPlans(mealPlansArray);
   const userLists = user ? user.lists : [];
   const { listArray, listLoading } = useGetLists(userLists);
-
-  const getMealPlan = useCallback(async (mealPlanId) => {
-    const result = await API.getMealPlan(mealPlanId);
-
-    setMealPlan(result);
-    setStartDate(
-      new Date(result.startDate.replace(/-/g, "/")).toLocaleDateString(
-        "en-us",
-        {
-          weekday: "short",
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        }
-      )
-    );
-  });
 
   const findList = (array, id) => {
     const targetList = array.filter((item) => item.mealPlanId === id);
@@ -69,12 +61,6 @@ const MealPlan = () => {
   };
 
   useEffect(() => {
-    if (!mealPlan) {
-      getMealPlan(mealPlanId);
-    }
-  }, []);
-
-  useEffect(() => {
     if (listArray.length > 0) findList(listArray, mealPlanId);
   }, [listArray]);
 
@@ -83,7 +69,7 @@ const MealPlan = () => {
   }, [plansArray]);
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <Box
         sx={{
           mt: 2,
@@ -146,22 +132,35 @@ const MealPlan = () => {
             <RecipeCard recipe={selected} />
           </>
         )}
-        {mealPlan &&
-          !selected &&
-          mealPlan.plan.length > 0 &&
-          mealPlan.plan.map((item, index) => {
-            // console.log(item);
-            return (
-              <MealPlanCard
-                index={index}
-                key={index}
-                item={item}
-                mealPlan={mealPlan}
-                setMealPlan={setMealPlan}
-                setSelected={setSelected}
-              />
-            );
-          })}
+        {mpLoading && <Spinner />}
+        <Box sx={{ width: 1 }}>
+          <Timeline
+            sx={{
+              p: 0,
+              [`& .${timelineItemClasses.root}:before`]: {
+                flex: 0,
+                padding: 0,
+              },
+            }}
+          >
+            {mealPlan &&
+              !selected &&
+              mealPlan.plan.length > 0 &&
+              mealPlan.plan.map((item, index) => {
+                // console.log(item);
+                return (
+                  <MealPlanCard
+                    index={index}
+                    key={index}
+                    item={item}
+                    mealPlan={mealPlan}
+                    setMealPlan={setMealPlan}
+                    setSelected={setSelected}
+                  />
+                );
+              })}
+          </Timeline>
+        </Box>
       </Box>
     </Container>
   );

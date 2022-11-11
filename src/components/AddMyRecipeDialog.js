@@ -28,11 +28,13 @@ const AddMyRecipeDialog = ({ addRecipe }) => {
   };
   return (
     <>
-      <Button onClick={toggleOpen}>My Recipes</Button>
+      <Button size="small" onClick={toggleOpen}>
+        My Recipes
+      </Button>
       <Dialog
         TransitionComponent={Transition}
         fullWidth
-        maxWidth={"sm"}
+        maxWidth="sm"
         open={open}
         onClose={toggleOpen}
       >
@@ -52,7 +54,7 @@ const AddMyRecipeDialog = ({ addRecipe }) => {
           </IconButton>
         </DialogTitle>
 
-        <DialogContent>
+        <DialogContent sx={{ p: 0 }}>
           <List>
             {user.recipes.length > 0 &&
               user.recipes.map((item, index) => {

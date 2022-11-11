@@ -40,7 +40,9 @@ export default function SearchDialog({ toggleSearching, callback }) {
 
   return (
     <>
-      <Button onClick={handleClickOpen}>Search</Button>
+      <Button size="small" onClick={handleClickOpen}>
+        Search
+      </Button>
       <Dialog
         fullScreen
         open={open}

@@ -28,7 +28,9 @@ const AddFavoriteDialog = ({ addRecipe }) => {
   };
   return (
     <>
-      <Button onClick={toggleOpen}>Favorites</Button>
+      <Button size="small" onClick={toggleOpen}>
+        Favorites
+      </Button>
       <Dialog
         TransitionComponent={Transition}
         fullWidth
@@ -52,7 +54,7 @@ const AddFavoriteDialog = ({ addRecipe }) => {
           </IconButton>
         </DialogTitle>
 
-        <DialogContent>
+        <DialogContent sx={{ p: 0 }}>
           <List>
             {user.favorites.length > 0 &&
               user.favorites.map((item, index) => {
