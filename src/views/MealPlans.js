@@ -16,7 +16,11 @@ const MealPlans = () => {
   const [viewArchived, setViewArchived] = useState(false);
 
   const mealPlansArray = user ? user.mealPlans : [];
-  const { plansArray, loading } = useGetMealPlans(mealPlansArray);
+  const archievedMealPlansArray = user ? user.archivedMealPlans : [];
+  const { plansArray, loading, archivedArray } = useGetMealPlans(
+    mealPlansArray,
+    archievedMealPlansArray
+  );
 
   const createPlan = () => {
     setCreating(true);
@@ -74,14 +78,15 @@ const MealPlans = () => {
               >
                 {plansArray.length > 0 &&
                   plansArray.map((plan, index) => {
-                    if (plan.archived) return;
                     return <MealPlanOverviewCard key={index} plan={plan} />;
                   })}
               </Box>
             )}
-            <Button onClick={toggleViewArchived} sx={{ m: 2 }}>
-              {viewArchived ? "hide archived" : "view archived"}
-            </Button>
+            {archivedArray.length > 0 && (
+              <Button onClick={toggleViewArchived} sx={{ m: 2 }}>
+                {viewArchived ? "hide archived" : "view archived"}
+              </Button>
+            )}
             {viewArchived && (
               <Box
                 sx={{
@@ -94,9 +99,10 @@ const MealPlans = () => {
                   mt: 2,
                 }}
               >
-                {plansArray.map((plan, index) => {
-                  if (!plan.archived) return;
-                  return <MealPlanOverviewCard key={index} plan={plan} />;
+                {archivedArray.map((plan, index) => {
+                  return (
+                    <MealPlanOverviewCard archived key={index} plan={plan} />
+                  );
                 })}
               </Box>
             )}

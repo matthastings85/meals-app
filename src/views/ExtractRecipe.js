@@ -9,24 +9,27 @@ import {
   Typography,
 } from "@mui/material";
 import RecipeCard from "../components/RecipeCard";
-import RecipePreviewCard from "../components/RecipePreviewCard";
 import { Context } from "../context";
 import { FOODAPI } from "../FOODAPI";
 import Spinner from "../components/Spinner";
 
-const ExtractRecipe = () => {
+const ExtractRecipe = ({ callback }) => {
   const [user, _setUser] = useContext(Context);
   const [recipe, setRecipe] = useState(null);
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
   const extractRecipe = async () => {
+    setRecipe(null);
     setLoading(true);
     if (url === "") return console.log("no url");
     const results = await FOODAPI.extractRecipe(url);
 
-    console.log(results);
+    // console.log(results);
     setRecipe(results);
+    if (callback) {
+      callback(results);
+    }
     setLoading(false);
   };
 

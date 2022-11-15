@@ -146,16 +146,16 @@ export const API = {
   updateMealPlan: async (recipe, index, mealPlanId) => {
     const url = baseUrl + "/api/updatemealplan/put";
 
-    console.log(recipe, index, mealPlanId);
+    // console.log(recipe, index, mealPlanId);
 
     return await await API.putMethod({ recipe, index, mealPlanId }, url);
   },
-  archiveMealPlan: async (mealPlanId) => {
+  archiveMealPlan: async (mealPlanId, userId) => {
     const url = baseUrl + "/api/archivemealplan/put";
 
-    console.log(mealPlanId);
+    console.log(mealPlanId, userId);
 
-    return await await API.putMethod({ mealPlanId }, url);
+    return await await API.putMethod({ mealPlanId, userId }, url);
   },
   getMealPlan: async (id) => {
     const url = baseUrl + "/api/getmealplan/get/" + id;

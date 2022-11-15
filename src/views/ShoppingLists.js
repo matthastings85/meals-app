@@ -11,7 +11,11 @@ import useGetMealPlans from "../hooks/useGetMealPlans";
 const ShoppingLists = () => {
   const [user, setUser] = useContext(Context);
   const mealPlansArray = user ? user.mealPlans : [];
-  const { plansArray, loading } = useGetMealPlans(mealPlansArray);
+  const archievedMealPlansArray = user ? user.archivedMealPlans : [];
+  const { plansArray, loading, archivedArray } = useGetMealPlans(
+    mealPlansArray,
+    archievedMealPlansArray
+  );
   const userLists = user ? user.lists : [];
   const { listArray, listLoading } = useGetLists(userLists);
 

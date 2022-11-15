@@ -13,7 +13,7 @@ import { Box } from "@mui/system";
 import { Context } from "../context";
 import { API } from "../API";
 
-const MealPlanOverviewCard = ({ plan }) => {
+const MealPlanOverviewCard = ({ plan, archived }) => {
   const [user, setUser] = useContext(Context);
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -40,12 +40,21 @@ const MealPlanOverviewCard = ({ plan }) => {
   const { start, end } = processDates(plan.startDate, plan.length);
 
   const handleArchive = async () => {
+    handleClose();
     console.log("archive", plan._id);
-    const result = await API.archiveMealPlan(plan._id);
+    const result = await API.archiveMealPlan(plan._id, user.userId);
     console.log(result);
+    const mealPlans = [...result.data.mealPlans];
+    const archivedMealPlans = [...result.data.archivedMealPlans];
+    setUser({
+      ...user,
+      mealPlans: mealPlans,
+      archivedMealPlans: archivedMealPlans,
+    });
   };
 
   const handleDelete = async () => {
+    handleClose();
     console.log("delete: ", plan._id, user.userId);
     const result = await API.deleteMealPlan(plan._id, user.userId);
     console.log(result);
@@ -94,9 +103,11 @@ const MealPlanOverviewCard = ({ plan }) => {
             p: 1,
           }}
         >
-          <Button onClick={handleArchive} startIcon={<Archive />}>
-            archive
-          </Button>
+          {!archived && (
+            <Button onClick={handleArchive} startIcon={<Archive />}>
+              archive
+            </Button>
+          )}
           <Button onClick={handleDelete} startIcon={<Delete />}>
             delete
           </Button>

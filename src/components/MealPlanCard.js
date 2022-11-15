@@ -18,6 +18,7 @@ import AddFavoriteDialog from "./AddFavoriteDialog";
 import RecipePreviewCard from "./RecipePreviewCard";
 import SearchDialog from "./SearchDialog";
 import AddMyRecipeDialog from "./AddMyRecipeDialog";
+import AddFromUrlDialog from "./AddFromUrlDialog";
 
 const MealPlanCard = ({ index, item, mealPlan, setMealPlan, setSelected }) => {
   const [user, setUser] = useContext(Context);
@@ -129,6 +130,7 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan, setSelected }) => {
                 />
                 <AddMyRecipeDialog addRecipe={addRecipe} />
                 <AddFavoriteDialog addRecipe={addRecipe} />
+                <AddFromUrlDialog addRecipe={addRecipe} />
                 <Button size="small" onClick={handleLeftovers}>
                   Leftovers
                 </Button>

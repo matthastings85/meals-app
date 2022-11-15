@@ -44,7 +44,11 @@ const MealPlan = () => {
   // Items need to check for list and create list
   const [user, setUser] = useContext(Context);
   const mealPlansArray = user ? user.mealPlans : [];
-  const { plansArray, loading } = useGetMealPlans(mealPlansArray);
+  const archievedMealPlansArray = user ? user.archivedMealPlans : [];
+  const { plansArray, loading, archivedArray } = useGetMealPlans(
+    mealPlansArray,
+    archievedMealPlansArray
+  );
   const userLists = user ? user.lists : [];
   const { listArray, listLoading } = useGetLists(userLists);
 
@@ -101,7 +105,7 @@ const MealPlan = () => {
           </Typography>
         )}
 
-        {list ? (
+        {list && !selected && (
           <LoadingButton
             onClick={() => navigate("/lists/" + list._id)}
             loading={listLoading}
@@ -109,7 +113,8 @@ const MealPlan = () => {
           >
             View List
           </LoadingButton>
-        ) : (
+        )}
+        {!list && !selected && (
           <LoadingButton
             onClick={() => {
               handleCreateList(planIndex, plansArray, user, setUser);

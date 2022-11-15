@@ -50,7 +50,7 @@ export default function RecipeCard({ recipe }) {
   };
 
   const favoriteRecipe = async () => {
-    const alreadyFavorite = checkFavorites();
+    const alreadyFavorite = checkFavorites(recipe);
     const userId = user.userId;
 
     if (!alreadyFavorite) {
@@ -59,6 +59,7 @@ export default function RecipeCard({ recipe }) {
       const source = custom ? "custom" : "spoonacular";
 
       const result = await API.favoriteRecipe(recipe, source, userId);
+      console.log(result);
       const favoriteRecipes = [...result.data.favorites];
       setUser({ ...user, favorites: favoriteRecipes });
       setFavoriteColor("primary.favorite");
@@ -72,22 +73,35 @@ export default function RecipeCard({ recipe }) {
     }
   };
 
-  const checkFavorites = () => {
-    if (
-      user.favorites.findIndex((item) => item.recipe.id === recipe.id) !== -1
-    ) {
-      const index = user.favorites.findIndex(
-        (item) => item.recipe.id === recipe.id
-      );
-      setFavoriteId(user.favorites[index]._id);
-      return true;
-    } else {
-      return false;
+  const checkFavorites = (recipe) => {
+    const recipeId = recipe.id;
+    const sourceName = recipe.sourceName;
+    const sourceUrl = recipe.sourceUrl;
+    const recipeTitle = recipe.title;
+
+    for (let favorite of user.favorites) {
+      if (recipeId !== -1) {
+        if (recipeId === favorite.recipe.id) {
+          setFavoriteId(favorite._id);
+          return true;
+        }
+      } else {
+        if (
+          sourceName === favorite.recipe.sourceName &&
+          sourceUrl === favorite.recipe.sourceUrl &&
+          recipeTitle === favorite.recipe.title
+        ) {
+          setFavoriteId(favorite._id);
+          return true;
+        }
+      }
     }
+    return false;
   };
 
   useEffect(() => {
-    const favorite = checkFavorites();
+    const favorite = checkFavorites(recipe);
+    console.log("already favorite", favorite);
     if (favorite) {
       setFavoriteColor("primary.favorite");
     }
