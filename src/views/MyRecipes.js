@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Avatar, Box, Button, Container, Typography } from "@mui/material";
-import { Favorite } from "@mui/icons-material";
+import { Favorite, MenuBookRounded } from "@mui/icons-material";
 import { Context } from "../context";
 import RecipePreviewCard from "../components/RecipePreviewCard";
 import RecipeCard from "../components/RecipeCard";
@@ -28,10 +28,10 @@ const MyRecipes = () => {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-            <Favorite />
+            <MenuBookRounded />
           </Avatar>
           <Typography component="h1" variant="h4">
-            Favorites
+            My Recipes
           </Typography>
         </Box>
       </Box>
