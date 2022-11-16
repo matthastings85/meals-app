@@ -1,16 +1,17 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 // Utilities
 import { useNavigate, useParams } from "react-router-dom";
-import { API } from "../API";
 import handleCreateList from "../helpers/createList";
 
 // Components
 import { Alert, Avatar, Button, Typography } from "@mui/material";
 import MealPlanCard from "../components/MealPlanCard";
 import { Box, Container } from "@mui/system";
-import { FastForward, FoodBankOutlined } from "@mui/icons-material";
+import { FoodBankOutlined } from "@mui/icons-material";
 import RecipeCard from "../components/RecipeCard";
+import { LoadingButton, Timeline, timelineItemClasses } from "@mui/lab";
+import Spinner from "../components/Spinner";
 
 // Context
 import { Context } from "../context";
@@ -18,18 +19,6 @@ import { Context } from "../context";
 // Hooks
 import useGetMealPlans from "../hooks/useGetMealPlans";
 import useGetLists from "../hooks/useGetLists";
-import Spinner from "../components/Spinner";
-import {
-  LoadingButton,
-  Timeline,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDot,
-  TimelineItem,
-  timelineItemClasses,
-  TimelineOppositeContent,
-  TimelineSeparator,
-} from "@mui/lab";
 import useFetchMealPlan from "../hooks/useFetchMealPlan";
 
 const MealPlan = () => {

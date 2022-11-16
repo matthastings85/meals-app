@@ -4,10 +4,15 @@ import { Avatar, Box, Button, Container, Typography } from "@mui/material";
 import RecipeCard from "../components/RecipeCard";
 import RecipePreviewCard from "../components/RecipePreviewCard";
 import { Context } from "../context";
+import Spinner from "../components/Spinner";
 
 const FavoritesView = () => {
   const [user, _setUser] = useContext(Context);
   const [selected, setSelected] = useState(null);
+
+  if (!user) {
+    return <Spinner />;
+  }
 
   return (
     <Container component="main" maxWidth="xs" sx={{ width: 1 }}>

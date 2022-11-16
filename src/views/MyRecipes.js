@@ -1,13 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Avatar, Box, Button, Container, Typography } from "@mui/material";
-import { Favorite, MenuBookRounded } from "@mui/icons-material";
+import { MenuBookRounded } from "@mui/icons-material";
 import { Context } from "../context";
 import RecipePreviewCard from "../components/RecipePreviewCard";
 import RecipeCard from "../components/RecipeCard";
+import Spinner from "../components/Spinner";
 
 const MyRecipes = () => {
-  const [user, setUser] = useContext(Context);
+  const [user, _setUser] = useContext(Context);
   const [selected, setSelected] = useState(null);
+
+  if (!user) {
+    return <Spinner />;
+  }
 
   return (
     <Container component="main" maxWidth="xs" sx={{ width: 1 }}>

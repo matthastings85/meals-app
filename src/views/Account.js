@@ -14,6 +14,7 @@ import {
 // Context
 import { Context } from "../context";
 import { API } from "../API";
+import Spinner from "../components/Spinner";
 
 const Account = () => {
   const [user, setUser] = useContext(Context);
@@ -33,6 +34,10 @@ const Account = () => {
       setErrorMessage(result.message);
     }
   };
+
+  if (!user) {
+    return <Spinner />;
+  }
 
   return (
     <Container component="main" maxWidth="xs" sx={{ width: 1 }}>

@@ -24,6 +24,10 @@ const ShoppingLists = () => {
     handleCreateList(index, plansArray, user, setUser);
   };
 
+  if (!user) {
+    return <Spinner />;
+  }
+
   return (
     <Container component="main" maxWidth="xs" sx={{ width: 1 }}>
       <Box

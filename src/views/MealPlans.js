@@ -30,6 +30,10 @@ const MealPlans = () => {
     setViewArchived(!viewArchived);
   };
 
+  if (!user) {
+    return <Spinner />;
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <Box

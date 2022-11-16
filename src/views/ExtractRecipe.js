@@ -9,12 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import RecipeCard from "../components/RecipeCard";
-import { Context } from "../context";
-import { FOODAPI } from "../FOODAPI";
 import Spinner from "../components/Spinner";
 
+import { FOODAPI } from "../FOODAPI";
+
 const ExtractRecipe = ({ callback }) => {
-  const [user, _setUser] = useContext(Context);
   const [recipe, setRecipe] = useState(null);
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);

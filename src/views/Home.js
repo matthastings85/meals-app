@@ -7,12 +7,17 @@ import {
   FoodBankOutlined,
   ListRounded,
 } from "@mui/icons-material";
+import Spinner from "../components/Spinner";
 
 // Context
 import { Context } from "../context";
 
 const Home = () => {
   const [user, _setUser] = useContext(Context);
+
+  if (!user) {
+    return <Spinner />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">

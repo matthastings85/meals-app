@@ -59,14 +59,14 @@ export default function RecipeCard({ recipe }) {
       const source = custom ? "custom" : "spoonacular";
 
       const result = await API.favoriteRecipe(recipe, source, userId);
-      console.log(result);
+      // console.log(result);
       const favoriteRecipes = [...result.data.favorites];
       setUser({ ...user, favorites: favoriteRecipes });
       setFavoriteColor("primary.favorite");
     } else {
       // remove favorite
       const result = await API.removeFavorite(favoriteId, userId);
-      console.log(result);
+      // console.log(result);
       const favoriteRecipes = [...result.data.user.favorites];
       setUser({ ...user, favorites: favoriteRecipes });
       setFavoriteColor("primary");
@@ -101,7 +101,7 @@ export default function RecipeCard({ recipe }) {
 
   useEffect(() => {
     const favorite = checkFavorites(recipe);
-    console.log("already favorite", favorite);
+    // console.log("already favorite", favorite);
     if (favorite) {
       setFavoriteColor("primary.favorite");
     }
