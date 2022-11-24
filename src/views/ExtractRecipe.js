@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { Favorite } from "@mui/icons-material";
+import React, { useState } from "react";
+import { LinkRounded } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -51,7 +51,7 @@ const ExtractRecipe = ({ callback }) => {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-            <Favorite />
+            <LinkRounded />
           </Avatar>
           <Typography component="h1" variant="h4">
             Extract Recipe
