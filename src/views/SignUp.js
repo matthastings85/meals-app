@@ -71,11 +71,10 @@ export default function SignUp() {
       password,
       marketing,
     };
-    console.log(newUser);
 
     // post new user to database
     const result = await API.signUpUser(newUser);
-    console.log(result);
+    // console.log(result);
 
     // handle response. Display error message, or save user to app context. then navigate home.
     if (result.error) {
@@ -83,7 +82,7 @@ export default function SignUp() {
       setResponseError(true);
       setErrorMessage(result.message);
     } else {
-      console.log("result: ", result);
+      // console.log("result: ", result);
       setUser(result.data);
       setCookie("userId", result.data.userId, { path: "/" });
       localStorage.setItem("userId", result.data.userId);

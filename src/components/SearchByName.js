@@ -22,7 +22,7 @@ const SearchByName = ({ callback, setPreview }) => {
   // Search for Recipes
   const handleSearch = async (query) => {
     const result = await FOODAPI.searchRecipes(query);
-    console.log(result);
+    // console.log(result);
     setSearchResults(result);
     setLoading(false);
   };

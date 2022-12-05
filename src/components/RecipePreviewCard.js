@@ -15,7 +15,7 @@ const RecipePreviewCard = ({
   const navigate = useNavigate();
   return (
     <Card sx={{ width: 1, display: "flex" }}>
-      {item.title !== "Leftovers" && (
+      {Object.keys(item).length > 1 && (
         <CardMedia
           component="img"
           height="125"
@@ -34,7 +34,11 @@ const RecipePreviewCard = ({
         }}
       >
         <Box>
-          <Typography component="h3" variant="subtitle2">
+          <Typography
+            align={Object.keys(item).length === 1 ? "center" : "left"}
+            component="h3"
+            variant="subtitle2"
+          >
             {item.title}
           </Typography>
           <Typography
@@ -51,7 +55,7 @@ const RecipePreviewCard = ({
             justifyContent: "space-around",
           }}
         >
-          {item.title !== "Leftovers" && !enablePreview && (
+          {Object.keys(item).length > 1 && !enablePreview && (
             <Button
               onClick={() => {
                 setSelected(item);

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Button, Paper, Typography } from "@mui/material";
 import {
   TimelineConnector,
@@ -7,22 +7,18 @@ import {
   TimelineItem,
   TimelineSeparator,
 } from "@mui/lab";
-import { MoreVert } from "@mui/icons-material";
 
 import { Box } from "@mui/system";
 import { API } from "../API";
 
-import { Context } from "../context";
-import { useNavigate } from "react-router-dom";
 import AddFavoriteDialog from "./AddFavoriteDialog";
 import RecipePreviewCard from "./RecipePreviewCard";
 import SearchDialog from "./SearchDialog";
 import AddMyRecipeDialog from "./AddMyRecipeDialog";
 import AddFromUrlDialog from "./AddFromUrlDialog";
+import WriteInDialog from "./WriteInDialog";
 
 const MealPlanCard = ({ index, item, mealPlan, setMealPlan, setSelected }) => {
-  const [user, setUser] = useContext(Context);
-  const navigate = useNavigate();
   const [options, setOptions] = useState(false);
   const [searching, setSearching] = useState(false);
   const [dotChecked, setDotChecked] = useState(false);
@@ -65,6 +61,17 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan, setSelected }) => {
 
   const handleLeftovers = async () => {
     const recipe = { title: "Leftovers" };
+    const result = await API.updateMealPlan(recipe, index, mealPlan._id);
+
+    // console.log(result);
+
+    // Update mealPlan state
+    setMealPlan(result.data);
+    toggleOptions();
+  };
+
+  const handleWriteIn = async (name) => {
+    const recipe = { title: name };
     const result = await API.updateMealPlan(recipe, index, mealPlan._id);
 
     // console.log(result);
@@ -134,6 +141,7 @@ const MealPlanCard = ({ index, item, mealPlan, setMealPlan, setSelected }) => {
                 <Button size="small" onClick={handleLeftovers}>
                   Leftovers
                 </Button>
+                <WriteInDialog handleAdd={handleWriteIn} />
               </Box>
             )}
             {item.recipe.title !== "recipe goes here" && (

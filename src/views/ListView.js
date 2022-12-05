@@ -36,7 +36,7 @@ const ListView = () => {
 
   const updateDatabase = async (acquiredList, listList) => {
     const result = await API.updateList(acquiredList, listList, listId);
-    console.log(result);
+    // console.log(result);
   };
 
   const handleCheck = (index, checked, setChecked) => {
@@ -98,6 +98,10 @@ const ListView = () => {
     setAcquired(newAcquired);
     setList(newList);
   };
+
+  useEffect(() => {
+    if (mealPlan) refreshList();
+  }, [mealPlan]);
 
   return (
     <Container component="main" maxWidth="xs" sx={{ mb: 8, width: 1 }}>

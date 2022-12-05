@@ -43,7 +43,7 @@ export const FOODAPI = {
     await axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
         results = response.data.results;
       })
       .catch(function (error) {
@@ -73,7 +73,7 @@ export const FOODAPI = {
     await axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
         results = response.data;
       })
       .catch(function (error) {
@@ -99,7 +99,7 @@ export const FOODAPI = {
       .catch((err) => console.error(err));
   },
   getRandom: async (tags) => {
-    console.log(tags);
+    // console.log(tags);
     const options = {
       method: "GET",
       url: "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random",
@@ -116,7 +116,7 @@ export const FOODAPI = {
     await axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
         results = response.data;
       })
       .catch(function (error) {
@@ -142,7 +142,7 @@ export const FOODAPI = {
     await axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
         results = response.data;
       })
       .catch(function (error) {

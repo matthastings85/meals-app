@@ -34,7 +34,7 @@ const MealPlan = () => {
   const [user, setUser] = useContext(Context);
   const mealPlansArray = user ? user.mealPlans : [];
   const archievedMealPlansArray = user ? user.archivedMealPlans : [];
-  const { plansArray, loading, archivedArray } = useGetMealPlans(
+  const { plansArray } = useGetMealPlans(
     mealPlansArray,
     archievedMealPlansArray
   );
@@ -94,6 +94,7 @@ const MealPlan = () => {
           </Typography>
         )}
 
+        {/* Button to navigate to list associated with meal plan */}
         {list && !selected && (
           <LoadingButton
             onClick={() => navigate("/lists/" + list._id)}
@@ -103,6 +104,8 @@ const MealPlan = () => {
             View List
           </LoadingButton>
         )}
+
+        {/* Button to create list from meal plan */}
         {!list && !selected && (
           <LoadingButton
             onClick={() => {
@@ -115,6 +118,7 @@ const MealPlan = () => {
           </LoadingButton>
         )}
 
+        {/* Back button when recipe is selected */}
         {selected && (
           <>
             <Button
@@ -126,7 +130,11 @@ const MealPlan = () => {
             <RecipeCard recipe={selected} />
           </>
         )}
+
+        {/* loading spinner */}
         {mpLoading && <Spinner />}
+
+        {/* main meal plan timeline */}
         <Box sx={{ width: 1 }}>
           <Timeline
             sx={{
@@ -141,7 +149,6 @@ const MealPlan = () => {
               !selected &&
               mealPlan.plan.length > 0 &&
               mealPlan.plan.map((item, index) => {
-                // console.log(item);
                 return (
                   <MealPlanCard
                     index={index}

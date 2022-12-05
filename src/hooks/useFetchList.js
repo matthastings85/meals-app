@@ -11,13 +11,13 @@ const useFetchList = (listId) => {
 
   const fetchList = async (listId) => {
     const result = await API.getList(listId);
-    console.log(result);
+    // console.log(result);
     setList(result.list);
     setAcquired(result.acquired);
     setMealPlanId(result.mealPlanId);
 
     const plan = await API.getMealPlan(result.mealPlanId);
-    console.log(plan);
+    // console.log(plan);
     setMealPlan(plan);
     setLoading(false);
   };
