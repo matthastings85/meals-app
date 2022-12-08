@@ -8,10 +8,16 @@ import {
   Popover,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Archive, Delete, MoreVert } from "@mui/icons-material";
+import {
+  Archive,
+  ContentCopyOutlined,
+  Delete,
+  MoreVert,
+} from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { Context } from "../context";
 import { API } from "../API";
+import DuplicatePlanDialog from "./DuplicatePlanDialog";
 
 const MealPlanOverviewCard = ({ plan, archived }) => {
   const [user, setUser] = useContext(Context);
@@ -41,9 +47,9 @@ const MealPlanOverviewCard = ({ plan, archived }) => {
 
   const handleArchive = async () => {
     handleClose();
-    console.log("archive", plan._id);
+    // console.log("archive", plan._id);
     const result = await API.archiveMealPlan(plan._id, user.userId);
-    console.log(result);
+    // console.log(result);
     const mealPlans = [...result.data.mealPlans];
     const archivedMealPlans = [...result.data.archivedMealPlans];
     setUser({
@@ -55,9 +61,9 @@ const MealPlanOverviewCard = ({ plan, archived }) => {
 
   const handleDelete = async () => {
     handleClose();
-    console.log("delete: ", plan._id, user.userId);
+    // console.log("delete: ", plan._id, user.userId);
     const result = await API.deleteMealPlan(plan._id, user.userId);
-    console.log(result);
+    // console.log(result);
     setUser(result.data.user);
   };
 
@@ -69,20 +75,13 @@ const MealPlanOverviewCard = ({ plan, archived }) => {
             <MoreVert />
           </IconButton>
         }
-        title={`${plan.length} Day Meal Plan`}
-        subheader={`${start.toLocaleDateString("en-us", {
-          weekday: "short",
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })}
-        to
-        ${end.toLocaleDateString("en-us", {
+        title={`${start.toLocaleDateString("en-us", {
           weekday: "short",
           year: "numeric",
           month: "short",
           day: "numeric",
         })}`}
+        subheader={`${plan.length} Day Meal Plan`}
       />
       <Popover
         id={id}
@@ -108,6 +107,7 @@ const MealPlanOverviewCard = ({ plan, archived }) => {
               archive
             </Button>
           )}
+          <DuplicatePlanDialog mealPlan={plan} />
           <Button onClick={handleDelete} startIcon={<Delete />}>
             delete
           </Button>

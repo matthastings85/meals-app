@@ -55,13 +55,13 @@ const ShoppingLists = () => {
         <Box sx={{ width: 1, mt: 3 }}>
           {loading && <Spinner />}
           {listLoading && <Spinner />}
-          {plansArray.length === 0 && !loading && (
+          {plansArray.length === 0 && !loading && !listLoading && (
             <Typography>
               You haven't created any meal plans. Lists are generated from meal
               plans. Create a meal plan, then come back to generate a list.
             </Typography>
           )}
-          {plansArray.length > 0 && !loading && (
+          {plansArray?.length && !loading && (
             <CreateListFromMealPlan
               array={plansArray}
               callback={callback}

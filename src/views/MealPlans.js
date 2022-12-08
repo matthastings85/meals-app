@@ -86,7 +86,7 @@ const MealPlans = () => {
                   })}
               </Box>
             )}
-            {archivedArray.length > 0 && (
+            {archivedArray?.length && !loading && (
               <Button onClick={toggleViewArchived} sx={{ m: 2 }}>
                 {viewArchived ? "hide archived" : "view archived"}
               </Button>

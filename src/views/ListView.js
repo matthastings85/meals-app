@@ -9,7 +9,7 @@ import {
   Container,
   Typography,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { API } from "../API";
 import AddToListDialog from "../components/AddToLIstDialog";
@@ -20,7 +20,6 @@ import { createList } from "../helpers/createList";
 import useFetchList from "../hooks/useFetchList";
 
 const ListView = () => {
-  const [user, setUser] = useContext(Context);
   const { listId } = useParams();
   const navigate = useNavigate();
   const {
